@@ -1,0 +1,68 @@
+/* colors principals */
+:root {
+    --black-bean: #3c1518ff;
+    --blood-red: #69140eff;
+    --brown: #a44200ff;
+    --bronze: #d58936ff;
+    --vanilla: #f2f3aeff;
+}
+     
+.header {
+    /* background: var(--brown); */
+    color: var(--brown);
+    border-radius: 5px;
+}
+
+.navbar-brand {
+    display: flex;
+    justify-content: center;
+    font-size: 36px;
+}
+
+.navbar-nav{
+    display: flex;
+    justify-content: center;
+    background: var(--brown);
+    border-radius: 10px;
+}
+
+.nav-item {
+    display: inline;
+}
+
+.nav-link {
+    padding: 14px 16px;
+    display: inline-block;
+    text-decoration: none;    
+    color: var(--vanilla);
+    transition: background 0.2s ease;     
+}
+.nav-link:hover {
+    background: var(--bronze);
+    /* transition: 1.25; */
+}
+
+.taules {
+    display: flex;
+    flex-direction: column;
+}
+
+.taula {
+    /* width: 300px; */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    background: var(--vanilla);
+    transition: background 0.3s ease;
+    text-align: center;
+}
+
+.taula:hover {
+    background: var(--bronze);
+    color: #fff;
+}
+
+    
