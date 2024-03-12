@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 /* colors principals */
 :root {
     --black-bean: #3c1518ff;
