@@ -22,7 +22,7 @@ export const NavBar = () => {
             {/* Logo */}
             <a
               href="#"
-              className="group inline-flex items-center space-x-2 text-xl font-bold tracking-wide text-gray-900 hover:text-gray-600"
+              className="group inline-flex items-center space-x-2 text-3xl font-bold tracking-wide text-gray-900 hover:text-gray-600"
             >
               <img 
                 src="/images/logo.png" 

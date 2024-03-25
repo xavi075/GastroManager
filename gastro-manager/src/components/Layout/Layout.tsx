@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import { NavBar } from './NavBar/Navbar';
 import 'tailwindcss/tailwind.css'
+import { Footer } from './Footer';
 
 interface LayoutProps {
   children: ReactNode;
@@ -16,6 +17,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <NavBar />
       </header>
       <main>{children}</main>
+      <footer className="fixed inset-x-0 bottom-0 p-4 text-center">
+        <Footer />
+      </footer>
     </div>
   );
 };
