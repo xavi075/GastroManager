@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { NavBar } from './Navbar';
+import { NavBar } from './NavBar/Navbar';
 import 'tailwindcss/tailwind.css'
 
 interface LayoutProps {
