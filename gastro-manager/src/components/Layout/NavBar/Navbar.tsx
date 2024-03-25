@@ -29,7 +29,7 @@ export const NavBar = () => {
                 alt="logo"
                 className="w-16"  
               />
-              <h1 className="text-blood_red hidden md:block">GastroManager</h1>
+              <h1 className="text-bronze-900 hidden md:block">GastroManager</h1>
             </a>
             {/* END Logo */}
           </div>
@@ -54,11 +54,11 @@ export const NavBar = () => {
               <button
                 onClick={() => setMobileNavOpen(!mobileNavOpen)}
                 type="button"
-                className="inline-flex items-center justify-center space-x-2 rounded-lg border border-blood_red-200 bg-white px-3 py-2 text-sm font-semibold leading-5 hover:border-blood_red-300 hover:text-gray-900 hover:shadow-sm focus:ring focus:border-blood_red-300 focus:ring-opacity-25 active:border-blood_red-500 active:shadow-none"
+                className="inline-flex items-center justify-center space-x-2 rounded-lg border border-bronze-200 bg-white px-3 py-2 text-sm font-semibold leading-5 hover:border-bronze-300 hover:text-gray-900 hover:shadow-sm focus:ring focus:border-bronze-300 focus:ring-opacity-25 active:border-bronze-500 active:shadow-none"
               >
                 <FontAwesomeIcon 
                   icon={faBars} 
-                  className={`hi-solid hi-menu inline-block size-5 text-blood_red`}
+                  className={`hi-solid hi-menu inline-block size-5 text-bronze-900`}
                 />
               </button>
             </div>
@@ -92,16 +92,16 @@ function NavBarLink( item : NavBarItem) {
       href={item.path} 
       className={`group flex items-center space-x-2 rounded-lg border px-3 py-2 text-m font-medium 
         ${pathname === item.path 
-          ? 'border-blood_red-200 bg-blood_red-100 text-blood_red-950 font-extrabold' 
-          : 'border-transparent text-blood_red-900 hover:bg-blood_red-50 hover:text-blood_red-950 active:border-blood_red-100'
+          ? 'border-bronze-200 bg-bronze-100 text-bronze-950 font-extrabold' 
+          : 'border-transparent text-bronze-900 hover:bg-bronze-50 hover:text-bronze-950 active:border-bronze-100'
       }`}
     >
       <FontAwesomeIcon 
         icon={item.icon} 
         className={`hi-mini hi-briefcase inline-block size-5 opacity-25  group-hover:opacity-100
           ${pathname === item.path 
-            ? 'text-blood_red-900'
-            : 'text-blood_red-800'
+            ? 'text-bronze-900'
+            : 'text-bronze-800'
         }`}
       />
       <span>{item.label}</span>
