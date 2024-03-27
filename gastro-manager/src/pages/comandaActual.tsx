@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/layout';
+import Layout from '../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEuroSign } from '@fortawesome/free-solid-svg-icons';
 
