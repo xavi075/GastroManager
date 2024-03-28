@@ -2,6 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import { NavBar } from './NavBar/Navbar';
 import 'tailwindcss/tailwind.css'
 import { Footer } from './Footer';
+import { Providers } from '@/providers';
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,8 +11,8 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
-    <div className="App">
-      {/* <header className="flex flex-wrap items-center w-full text-brown md:justify-between"> */}
+    <Providers>
+      <div className="App">
       <header>
         <NavBar />
       </header>
@@ -20,6 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Footer />
       </footer>
     </div>
+    </Providers>
   );
 };
 
