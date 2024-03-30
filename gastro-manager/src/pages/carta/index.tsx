@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default function carta (){
   return (
     <Layout>
-      <div className="m-2 grid grid-cols-2 justify-items-center gap-2 p-2 ">
+      <div className="m-2 grid grid-cols-1 sm:grid-cols-2 justify-items-center gap-2 p-2 ">
         <GrupsPlats />
         <Menu />
       </div>    
