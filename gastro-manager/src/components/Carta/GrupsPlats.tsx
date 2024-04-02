@@ -7,7 +7,7 @@ import { faPlus, faPencil, faFolderPlus } from '@fortawesome/free-solid-svg-icon
 export const GrupsPlats = () => {
     return (
         <section>
-            <h2 className='text-xl font-bold m-2 text-center'>Carta de plats</h2>
+            <h2 className='text-2xl font-bold m-2 text-center'>Carta de plats</h2>
             <article className='bg-bronze-200 rounded-md my-4 mx-auto text-center justify-center'>
                 <h3 className='text-2xl font-bold text-center text-gray-800 mb-4 pt-2'>Tapes</h3>
                 <div className='grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 justify-items-center mx-2'>
