@@ -9,7 +9,7 @@ export const Footer = () => {
       </a>
 
       <p className="text-sm text-bronze-950 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-bronze-600 sm:py-2 sm:mt-0 mt-4">
-        © 2020 GastroManager
+        © 2024 GastroManager
       </p>
 
       <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start text-bronze-950">
