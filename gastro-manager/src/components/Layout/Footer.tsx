@@ -4,7 +4,7 @@ import { faSquareFacebook, faInstagram, faXTwitter, faLinkedin } from "@fortawes
 export const Footer = () => {
   return (
     <footer className="p-4 w-full flex items-center sm:flex-row flex-col bg-bronze-200">
-      <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
+      <a className="flex title-font font-medium items-center md:justify-start justify-center">
         <img src="/images/transparent-logo.png" alt="logo" className="w-16" />
       </a>
 

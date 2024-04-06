@@ -5,13 +5,13 @@ import Link from 'next/link'
 import { UserDropDown } from "./UserDropDown";
 import { NAVBAR_LINKS } from "../../../../lib/constants/navigation";
 import { useRouter } from "next/router";
-import { NavBarItem } from "../../../types/types";
+import { NavBarItem } from "@/types/types";
 
 export const NavBar = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <div
+    <header
       id="header"
       className="flex flex-none items-center bg-white shadow-md"
     >
@@ -22,7 +22,7 @@ export const NavBar = () => {
             {/* Logo */}
             <a
               href="taules"
-              className="group inline-flex items-center space-x-2 text-3xl font-bold tracking-wide text-gray-900 hover:text-gray-600"
+              className="inline-flex items-center space-x-2 text-3xl font-bold tracking-wide"
             >
               <img
                 src="/images/logo.png"
@@ -47,20 +47,20 @@ export const NavBar = () => {
             </nav>
             {/* END Desktop Navigation */}
 
-            <UserDropDown></UserDropDown>
+            <UserDropDown />
 
             {/* Toggle Mobile Navigation */}
             <div className="lg:hidden">
               <button
                 onClick={() => setMobileNavOpen(!mobileNavOpen)}
                 type="button"
-                className={`group flex items-center space-x-2 rounded-lg border px-3 py-2 text-m font-medium border-bronze-300
+                className={`flex items-center space-x-2 rounded-lg border px-3 py-2 text-m font-medium border-bronze-300
                   ${mobileNavOpen ? 'bg-bronze-100 hover:bg-transparent' : 'bg-transparent hover:bg-bronze-100'}
                 `}
               >
                 <FontAwesomeIcon
                   icon={faBars}
-                  className={`hi-solid hi-menu inline-block size-6 text-bronze-900`}
+                  className={`inline-block size-6 text-bronze-900`}
                 />
               </button>
             </div>
@@ -70,29 +70,27 @@ export const NavBar = () => {
         </div>
 
         {/* Mobile Navigation */}
-        <div className={`lg:hidden ${mobileNavOpen ? "" : "hidden"}`}>
-          <nav className="flex flex-col space-y-2 border-t py-4">
+        <nav className={`lg:hidden ${mobileNavOpen ? "" : "hidden"} flex flex-col space-y-2 border-t py-4`}>
 
-            {NAVBAR_LINKS.map((item) => (
-              <NavBarLink {...item} />
-            ))}
+          {NAVBAR_LINKS.map((item) => (
+            <NavBarLink {...item} />
+          ))}
 
-          </nav>
-        </div>
+        </nav>
         {/* END Mobile Navigation */}
       </div>
-    </div>
+    </header>
   );
 };
 
 function NavBarLink(item: NavBarItem) {
-  const router = useRouter(); // Obtenir l'objete router de Next.js
+  const router = useRouter(); // Obtenir l'objet router de Next.js
   const { pathname } = router; // Obtenir la ruta actual
 
   return (
     <Link
       href={item.path}
-      className={`group flex items-center space-x-2 rounded-lg border px-3 py-2 text-m font-medium 
+      className={`flex items-center space-x-2 rounded-lg border px-3 py-2 text-m font-medium 
         ${pathname === item.path
           ? 'border-bronze-200 bg-bronze-100 text-bronze-950 font-extrabold'
           : 'border-transparent text-bronze-900 hover:bg-bronze-100 hover:text-bronze-950 active:border-bronze-100'
@@ -100,7 +98,7 @@ function NavBarLink(item: NavBarItem) {
     >
       <FontAwesomeIcon
         icon={item.icon}
-        className={`hi-mini hi-briefcase inline-block size-5 opacity-25 group-hover:opacity-100
+        className={`inline-block size-5 opacity-25 group-hover:opacity-100
           ${pathname === item.path
             ? 'text-bronze-900'
             : 'text-bronze-800'

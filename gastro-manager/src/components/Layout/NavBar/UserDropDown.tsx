@@ -3,7 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { USERDROPDOWN_LINKS } from "../../../../lib/constants/navigation";
 import { useRouter } from "next/router";
@@ -31,8 +31,8 @@ export const UserDropDown = () => {
       >
         <span>John</span>
         <FontAwesomeIcon
-          icon={faChevronUp}
-          className={`hi-mini hi-chevron-down inline-block size-5 transform transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+          icon={faChevronRight}
+          className={`hi-mini hi-chevron-down inline-block size-5 transform transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`}
         />
       </Menu.Button>
       {/* END Dropdown Toggle Button */}
