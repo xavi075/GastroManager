@@ -1,0 +1,8 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/personal": "pages/personal.js",
+  "/profile": "pages/profile.js",
+  "/AfegirUsuari": "pages/AfegirUsuari.js"
+}
