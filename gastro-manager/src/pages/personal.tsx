@@ -1,7 +1,10 @@
+// Personal.tsx
+
 import React, { useState } from 'react';
 import Layout from '../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router'; // Importem useRouter per gestionar la navegació
 
 const Personal: React.FC = () => {
   const [usuaris, setUsuaris] = useState<{ nom: string; cognom: string; rol: string; correu: string }[]>([
@@ -11,14 +14,11 @@ const Personal: React.FC = () => {
     { nom: 'Queralt', cognom: 'del Águila', rol: 'Cambrer', correu: 'queralt@gmail.com' },
   ]);
 
+  const router = useRouter(); // Inicialitzem useRouter
+
   const afegirUsuari = () => {
-    const nouUsuari = {
-      nom: `Nom`,
-      cognom: 'Cognom',
-      rol: 'Rol',
-      correu: 'correu@example.com',
-    };
-    setUsuaris([...usuaris, nouUsuari]);
+    // Navegació cap al formulari d'afegir usuari quan es fa clic al botó
+    router.push('/formulari');
   };
 
   const eliminarUsuari = (index: number) => {
@@ -64,4 +64,3 @@ const Personal: React.FC = () => {
 };
 
 export default Personal;
-
