@@ -2,7 +2,9 @@ import { useState } from "react";
 import Layout from '@/components/Layout/Layout';
 import { Input, Button } from "@/utils/components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk, faTrash } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
+
 
 export default function editaGrupPlats (){
 
@@ -24,12 +26,11 @@ export default function editaGrupPlats (){
         setName(e.target.value);
     };
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
     };
 
   return (
     <Layout>
-        <div>
+        <div className=" justify-items-right">
             <h1 className="text-2xl font-bold m-2 text-center p-2">Edició del grup</h1>
             <form className="justify-items-center w-full" onSubmit={handleSubmit}>
                 <section className="bg-bronze-200 rounded-md m-2 p-2">
@@ -56,12 +57,12 @@ export default function editaGrupPlats (){
                         <Input
                             type="number"
                             label="Preu"
-                            placeholder="0.00"
-                            value={platPreu.toString()}
+                            // value={platPreu.toString()}
                             min={0}
-                            onChange={handlePlatPreuChange}
+                            step={0.01}
+                            // onChange={handlePlatPreuChange}
                             endContent={
-                                <div className="pointer-events-none flex items-center">
+                                <div className="flex items-center">
                                     <span className="text-default-400 text-small">€</span>
                                 </div>
                             }
@@ -75,12 +76,12 @@ export default function editaGrupPlats (){
                     {/* TODO: Fer la llista de plats escalable i iterable */}
                     {/* TODO: Afegir plat */}
                 </section>
-
-                {/* TODO: Centrar botó */}
                 <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2">
-                    Guarda
+                    Guardar <FontAwesomeIcon icon={faFloppyDisk}/>
                 </button>
+                {/* TODO: Centrar botó */}
             </form>
+
         </div>    
     </Layout>
   );
