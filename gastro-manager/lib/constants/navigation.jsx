@@ -39,7 +39,7 @@ export const USERDROPDOWN_LINKS = [
   {
     key: "perfil",
     label: "Perfil",
-    path: "/perfil",
+    path: "/profile",
     icon: faUser,
   },
   {
