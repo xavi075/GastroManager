@@ -1,5 +1,3 @@
-// Personal.tsx
-
 import React, { useState } from 'react';
 import Layout from '../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,8 +15,8 @@ const Personal: React.FC = () => {
   const router = useRouter(); // Inicialitzem useRouter
 
   const afegirUsuari = () => {
-    // Navegació cap al formulari d'afegir usuari quan es fa clic al botó
-    router.push('/formulari');
+    // Navegació cap a la nova pàgina d'afegir usuari quan es fa clic al botó
+    router.push('/AfegirUsuari');
   };
 
   const eliminarUsuari = (index: number) => {
@@ -45,7 +43,7 @@ const Personal: React.FC = () => {
                   </div>
                 </div>
                 <div className="p-3 flex justify-center">
-                  <button onClick={() => eliminarUsuari(index)} className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-1 px-2 rounded text-sm">
+                  <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-1 px-2 rounded text-sm" onClick={() => eliminarUsuari(index)}>
                     <FontAwesomeIcon icon={faMinus}/> Eliminar Usuari
                   </button>
                 </div>
