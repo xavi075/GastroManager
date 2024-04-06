@@ -12,14 +12,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <Providers>
-      <div className="App">
+      <div className="App flex flex-col h-screen w-full">
         <header>
           <NavBar />
         </header>
-        <main>{children}</main>
-        <footer className="inset-x-0 bottom-0 p-4 text-center">
-          <Footer />
-        </footer>
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
       </div>
     </Providers>
   );
