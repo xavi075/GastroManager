@@ -9,6 +9,13 @@ CREATE TABLE rol (
 );
 -- cuiner, cambrer, administrador
 
+CREATE TABLE restaurant ( 
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    nom VARCHAR(100) NOT NULL,
+    adreca VARCHAR(50) NOT NULL,
+    nif VARCHAR(50) NOT NULL 
+);
+
 CREATE TABLE usuari ( 
     id INT AUTO_INCREMENT PRIMARY KEY, 
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -17,29 +24,23 @@ CREATE TABLE usuari (
     dataCreacioUsuari DATETIME,
     idRol INT,
     idRestaurant INT,
-    FOREIGN KEY (idRol) REFERENCES rols (id),
-    FOREIGN KEY (idRestaurant) REFERENCES restaurants (id)  
+    FOREIGN KEY (idRol) REFERENCES rol (id),
+    FOREIGN KEY (idRestaurant) REFERENCES restaurant (id)  
 );
 
-CREATE TABLE restaurant ( 
-    id INT AUTO_INCREMENT PRIMARY KEY, 
-    nom VARCHAR(100) NOT NULL,
-    adreca VARCHAR(50) NOT NULL,
-    nif VARCHAR(50) NOT NULL 
-);
 
 CREATE TABLE taula ( 
     id INT AUTO_INCREMENT PRIMARY KEY, 
     numTaula INT NOT NULL,
     idRestaurant INT,
-    FOREIGN KEY (idRestaurant) REFERENCES restaurants (id)
+    FOREIGN KEY (idRestaurant) REFERENCES restaurant (id)
 );
 
 CREATE TABLE grupPlat ( 
     id INT AUTO_INCREMENT PRIMARY KEY, 
     nomGrup VARCHAR(100) NOT NULL,
     idRestaurant INT,
-    FOREIGN KEY (idRestaurant) REFERENCES restaurants (id)
+    FOREIGN KEY (idRestaurant) REFERENCES restaurant (id)
 );
 
 CREATE TABLE plat ( 
@@ -58,8 +59,10 @@ CREATE TABLE menu (
     idGrupPrimerPlat INT,
     idGrupSegonPlat INT,
     idGrupPostres INT,
-    FOREIGN KEY (idRestaurant) REFERENCES restaurants (id)
-    FOREIGN KEY (idGrupPrimerPlat, idGrupSegonPlat, idGrupPostres) REFERENCES grupPlat (id)
+    FOREIGN KEY (idRestaurant) REFERENCES restaurant (id),
+    FOREIGN KEY (idGrupPrimerPlat) REFERENCES grupPlat (id),
+    FOREIGN KEY (idGrupSegonPlat) REFERENCES grupPlat (id),
+    FOREIGN KEY (idGrupPostres) REFERENCES grupPlat (id)
 );
 
 CREATE TABLE comanda ( 
@@ -90,6 +93,8 @@ CREATE TABLE liniaMenu (
     idSegonPlat INT,
     idPostres INT,
     FOREIGN KEY (idComanda) REFERENCES comanda (id),
-    FOREIGN KEY (idMenu) REFERENCES menu (id)
-    FOREIGN KEY (idPrimerPlat, idSegonPlat, idPostres) REFERENCES plat (id)
+    FOREIGN KEY (idMenu) REFERENCES menu (id),
+    FOREIGN KEY (idPrimerPlat) REFERENCES plat (id),
+    FOREIGN KEY (idSegonPlat) REFERENCES plat (id),
+    FOREIGN KEY (idPostres) REFERENCES plat (id)
 );
