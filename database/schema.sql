@@ -112,7 +112,7 @@ BEGIN
     DECLARE total DECIMAL(5,2);
     
     -- Calcular el preu total de les línies de comanda
-    SET total = (SELECT SUM(preuTotal) FROM liniaComanda WHERE idComanda = NEW.idComanda);
+    SET total = (SELECT SUM(preuTotal) FROM liniaComanda WHERE idComanda = p_idComanda);
     
     -- Sumar el preu total de les línies de menú
     SET total = total + 
@@ -121,7 +121,7 @@ BEGIN
             FROM menu AS tMenu 
                 INNER JOIN liniaMenu AS tLinMenu 
                     ON tMenu.id = tLinMenu.idMenu
-            WHERE tLinMenu.idComanda = NEW.idComanda
+            WHERE tLinMenu.idComanda = p_idComanda
         );
     
     -- Actualizar el precio total en la taula de comanda
