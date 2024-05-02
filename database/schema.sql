@@ -1,5 +1,5 @@
 -- CREATE DATABASE GastroManager; --crear db
--- USE integracioSistemes; --establir-la com a predeterminada
+-- USE GastroManager; --establir-la com a predeterminada
 -- SET autocommit = 0; -- per evitar que cada sentència es tracti com una transacció independent
 
 -- crear les taules necessàries
@@ -111,19 +111,25 @@ CREATE PROCEDURE calcularPreuTotalComanda(IN p_idComanda INT)
 BEGIN
     DECLARE total DECIMAL(5,2);
     
+    SET total = 0;
+
+
     -- Calcular el preu total de les línies de comanda
-    SET total = (SELECT SUM(preuTotal) FROM liniaComanda WHERE idComanda = p_idComanda);
-    
+    IF EXISTS (SELECT 1 FROM liniaComanda WHERE idComanda = p_idComanda) THEN
+        SET total = (SELECT SUM(preuTotal) FROM liniaComanda WHERE idComanda = p_idComanda);
+    END IF;
+
     -- Sumar el preu total de les línies de menú
-    SET total = total + 
-        (
-            SELECT SUM(preu) 
-            FROM menu AS tMenu 
-                INNER JOIN liniaMenu AS tLinMenu 
-                    ON tMenu.id = tLinMenu.idMenu
-            WHERE tLinMenu.idComanda = p_idComanda
-        );
-    
+    IF EXISTS (SELECT 1 FROM liniaMenu WHERE idComanda = p_idComanda) THEN
+	    SET total = total + 
+		(
+		    SELECT SUM(preu) 
+		    FROM menu AS tMenu 
+		        INNER JOIN liniaMenu AS tLinMenu 
+		            ON tMenu.id = tLinMenu.idMenu
+		    WHERE tLinMenu.idComanda = p_idComanda
+		);
+    END IF;
     -- Actualizar el precio total en la taula de comanda
     UPDATE comanda SET preu = total WHERE id = p_idComanda;
 END;
@@ -224,4 +230,43 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+-- Trigger per comprovar que els plats de la linia de menu corresponent al grup de plats del menu
+DELIMITER //
+CREATE TRIGGER comprovarPlatsMenu
+BEFORE INSERT ON liniaMenu
+FOR EACH ROW
+BEGIN
+    DECLARE grupPrimerPlatMenu INT;
+    DECLARE grupSegonPlatMenu INT;
+    DECLARE grupPostresMenu INT;
+    DECLARE grupPrimerPlat INT;
+    DECLARE grupSegonPlat INT;
+    DECLARE grupPostres INT;
+
+    SET grupPrimerPlatMenu = (SELECT idGrupPrimerPlat FROM menu WHERE id = NEW.idMenu);
+    SET grupSegonPlatMenu = (SELECT idGrupSegonPlat FROM menu WHERE id = NEW.idMenu);
+    SET grupPostresMenu = (SELECT idGrupPostres FROM menu WHERE id = NEW.idMenu);
+
+    SET grupPrimerPlat = (SELECT idGrup FROM plat WHERE id = NEW.idPrimerPlat);
+    SET grupSegonPlat = (SELECT idGrup FROM plat WHERE id = NEW.idSegonPlat);
+    SET grupPostres = (SELECT idGrup FROM plat WHERE id = NEW.idPostres);
+
+    IF (grupPrimerPlatMenu <> grupPrimerPlat) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El grup de plat del primer plat no coincideix amb el grup del primer plat del menu';
+    END IF;
+
+    IF (grupSegonPlatMenu <> grupSegonPlat) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El grup de plat del segon plat no coincideix amb el grup del segon plat del menu';
+    END IF;
+
+    IF (grupPostresMenu <> grupPostres) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El grup de plat de les postres no coincideix amb el grup de les postres del menu';
+    END IF;
+END;
+//
+DELIMITER ;
+
+
+
 
