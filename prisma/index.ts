@@ -45,6 +45,43 @@ app.post('/plats', async (req: typeof NextApiRequest, res: typeof NextApiRespons
   }
 })
 
+app.get('/taules', async (req: typeof NextApiRequest, res: typeof NextApiResponse) => {
+  try {
+    const allTaules = await prisma.taula.findMany()
+    res.json(allTaules)
+  }
+  catch (e: any) {
+    res.json({ error: e.message })
+  }
+})
+
+app.post('/taules', async (req: typeof NextApiRequest, res: typeof NextApiResponse) => {
+  try {
+    const { idRestaurant, numTaula, afegir } = req.body
+    console.log(req.body)
+    if (afegir) {
+      const crearPlat = await prisma.taula.create({
+        data: {
+          idRestaurant,
+          numTaula,
+        }
+      })
+      res.json(crearPlat)
+    } else {
+      const eliminarPlat = await prisma.taula.deleteMany({
+        where: {
+            idRestaurant,
+            numTaula,
+        }
+      })
+      res.json(eliminarPlat)
+    }
+  }
+  catch (e: any) {
+    res.json({ error: e.message })
+  }
+})
+
 // async function main() {
 //   // TODO: Escriure Prisma Client queries
 //   const crearRol = await prisma.rol.create({
@@ -67,8 +104,8 @@ app.post('/plats', async (req: typeof NextApiRequest, res: typeof NextApiRespons
 //     process.exit(1)
 //   })
 
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000')
+app.listen(5000, () => {
+  console.log('Server is running on http://localhost:5000')
 })
 
 

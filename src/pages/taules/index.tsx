@@ -1,15 +1,48 @@
-import React,  { useState } from 'react';
+import React,  { useState, useEffect } from 'react';
 import Layout from '../../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { response } from 'express';
 
 const Taules: React.FC = () => {
-  const [numTaules, setNumTaules] = useState(10); // Estat per emmagatzemar la quantitat de taules
+  const [numTaules, setNumTaules] = useState(0); // Estat per emmagatzemar la quantitat de taules
+
+  useEffect(() => {
+    fetch('127.0.0.1:5000/taules', {
+      method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+      const numTaules = data.numTaules;
+      setNumTaules(numTaules);
+    })
+    .catch(error => {
+      console.error("Error al obtenir el nombre de taules:", error);
+    })
+  }, []);
+  
 
   //Event per afegir taules
   const handleAfegirTaula = () => { 
     setNumTaules(numTaules + 1);
+    fetch('127.0.0.1:5000/taules', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        idRestaurant: 1,
+        numTaula: numTaules,
+        afegir: true,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+    })
+    .catch(error => {
+      console.error("Error al afegir taula:", error);
+    })
   };
 
   //Event per eliminar taules
@@ -17,6 +50,23 @@ const Taules: React.FC = () => {
     if (numTaules > 0) {
       setNumTaules(numTaules - 1);
     }
+    fetch('127.0.0.1:5000/taules', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        idRestaurant: 1,
+        numTaula: numTaules,
+        afegir: false,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+    })
+    .catch(error => {
+      console.error("Error al eliminar taula:", error);
+    })
   };
 
   return (
