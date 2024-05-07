@@ -4,69 +4,49 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { response } from 'express';
+import { useUser } from '@nextui-org/react';
+import { getTaules, addTaula, deleteTaula } from "../../utils/api";
+import { error } from 'console';
 
 const Taules: React.FC = () => {
-  const [numTaules, setNumTaules] = useState(0); // Estat per emmagatzemar la quantitat de taules
+
+  const [numTaules, setNumTaules] = useState<number>(0); // Estat per emmagatzemar la quantitat de taules
 
   useEffect(() => {
-    fetch('127.0.0.1:5000/taules', {
-      method: 'GET'
+    getTaules("1")
+    .then(response => {
+      if (response.length !== numTaules) {
+        setNumTaules(response.length);
+      }
     })
-    .then(response => response.json())
-    .then(data => {
-      const numTaules = data.numTaules;
-      setNumTaules(numTaules);
-    })
-    .catch(error => {
-      console.error("Error al obtenir el nombre de taules:", error);
-    })
-  }, []);
+    .catch((error) => {
+      console.error('Error when get taules: ', error);
+    });
+  }, [])
   
 
   //Event per afegir taules
   const handleAfegirTaula = () => { 
-    setNumTaules(numTaules + 1);
-    fetch('127.0.0.1:5000/taules', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        idRestaurant: 1,
-        numTaula: numTaules,
-        afegir: true,
-      })
+    addTaula(1, numTaules + 1)
+    .then(response => {
+        setNumTaules(numTaules + 1);
     })
-    .then(response => response.json())
-    .then(data => {
-    })
-    .catch(error => {
-      console.error("Error al afegir taula:", error);
-    })
+    .catch((error) => {
+      console.error('Error when add taules: ', error);
+    });
   };
 
   //Event per eliminar taules
   const handleEliminarTaula = () => {
-    if (numTaules > 0) {
-      setNumTaules(numTaules - 1);
-    }
-    fetch('127.0.0.1:5000/taules', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        idRestaurant: 1,
-        numTaula: numTaules,
-        afegir: false,
+    if(numTaules > 0){
+      deleteTaula(1, numTaules)
+      .then(response => {
+          setNumTaules(numTaules - 1);
       })
-    })
-    .then(response => response.json())
-    .then(data => {
-    })
-    .catch(error => {
-      console.error("Error al eliminar taula:", error);
-    })
+      .catch((error) => {
+        console.error('Error when delete taules: ', error);
+      });
+    }
   };
 
   return (

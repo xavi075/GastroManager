@@ -1,8 +1,13 @@
 const { PrismaClient } = require('@prisma/client');
 const { NextApiRequest, NextApiResponse } = require('next');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 app.use(express.json());
+require('dotenv').config();
+app.use(cors({
+  origin: 'http://localhost:3000' // Permitir solo solicitudes desde http://localhost:3000
+}));
 
 const prisma = new PrismaClient();
 
@@ -47,7 +52,12 @@ app.post('/plats', async (req: typeof NextApiRequest, res: typeof NextApiRespons
 
 app.get('/taules', async (req: typeof NextApiRequest, res: typeof NextApiResponse) => {
   try {
-    const allTaules = await prisma.taula.findMany()
+    const idRestaurant = req.params.idRestaurant;
+    const allTaules = await prisma.taula.findMany({
+      where: {
+        idRestaurant: idRestaurant
+      }
+    });
     res.json(allTaules)
   }
   catch (e: any) {
@@ -60,21 +70,21 @@ app.post('/taules', async (req: typeof NextApiRequest, res: typeof NextApiRespon
     const { idRestaurant, numTaula, afegir } = req.body
     console.log(req.body)
     if (afegir) {
-      const crearPlat = await prisma.taula.create({
+      const crearTaula = await prisma.taula.create({
         data: {
           idRestaurant,
           numTaula,
         }
       })
-      res.json(crearPlat)
+      res.json(crearTaula)
     } else {
-      const eliminarPlat = await prisma.taula.deleteMany({
+      const eliminarTaula = await prisma.taula.deleteMany({
         where: {
             idRestaurant,
             numTaula,
         }
       })
-      res.json(eliminarPlat)
+      res.json(eliminarTaula)
     }
   }
   catch (e: any) {
