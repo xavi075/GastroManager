@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faEuroSign, faSquarePlus, faSquareMinus, faFloppyDisk, faTrash} from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 import { IComanda, ILiniaComanda, ILiniaMenu } from '@/utils/interfaces';
-import { getComanda, getLiniesComanda, getLiniesMenu, updateQtyLiniaComanda, deleteLiniaComanda, deleteLiniaMenu } from '@/utils/api';
+import { getComanda, getLiniesComanda, getLiniesMenu, updateQtyLiniaComanda, deleteLiniaComanda, deleteLiniaMenu, updateComanda } from '@/utils/api';
 import { get } from 'http';
 import { response } from 'express';
 import { Console, error } from 'console';
@@ -53,6 +53,18 @@ const comandaActual: React.FC = () => {
       })
       .catch((error) => {
         console.error('Error when delete linia menu: ', error);
+      });
+    }
+  };
+
+  const pagarComanda = (idComanda: number) => {
+    if(idComanda){
+      updateComanda(idComanda)
+      .then(response => {
+        setliniesModificades(true);
+      })
+      .catch((error) => {
+        console.error('Error when update comanda: ', error);
       });
     }
   };
@@ -161,7 +173,7 @@ const comandaActual: React.FC = () => {
           {/* <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
             Guardar <FontAwesomeIcon icon={faFloppyDisk}/>
           </button> */}
-          <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
+          <button onClick={() => pagarComanda(comanda[0].id)} className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
             Pagar <FontAwesomeIcon icon={faEuroSign}/>
           </button>
         </div>

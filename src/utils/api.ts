@@ -130,3 +130,18 @@ export function updateQtyLiniaComanda(id: number, novaQuantitat: number): Promis
         return res 
     })
   }
+
+  export function updateComanda(id: number): Promise<IComanda> {
+    return fetch(`/api/comanda/update?id=${id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
