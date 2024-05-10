@@ -10,8 +10,20 @@ export default async function handler(
 ) {
     if (req.method === "GET") {
         try {
-            const roles = await prisma.rol.findMany();
-            res.status(200).json(roles);
+            const { id } = req.query;
+            if (id) {
+                const rol = await prisma.rol.findUnique({
+                    where: {
+                        id: Number(id),
+                    },
+                });
+                res.status(200).json(rol);
+                return;
+            } else {
+                const roles = await prisma.rol.findMany();
+                res.status(200).json(roles);
+                return;
+            }
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }
