@@ -15,6 +15,7 @@ const Taules: React.FC = () => {
   useEffect(() => {
     getTaules("1")
     .then(response => {
+      console.log(response) 
         setTaules(response);
     })
     .catch((error) => {

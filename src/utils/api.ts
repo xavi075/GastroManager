@@ -1,4 +1,4 @@
-import { ITaula } from "./interfaces";
+import { IComanda, ILiniaComanda, IPlat, ITaula } from "./interfaces";
 
 
 const ENDPOINT = "http://localhost:5000"
@@ -46,3 +46,46 @@ export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula
         return res 
     })
   }
+
+  export function getComanda (idTaula: string): Promise<IComanda> {
+    return fetch(`${ENDPOINT}/comanda?idTaula=${idTaula}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get comanda is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getLiniesComanda (idComanda: string): Promise<ILiniaComanda[]> {
+    return fetch(`${ENDPOINT}/liniesComanda?idComanda=${idComanda}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get linies comanda is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getLiniesMenu (idComanda: string): Promise<ILiniaComanda[]> {
+    return fetch(`${ENDPOINT}/liniesMenu?idComanda=${idComanda}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get linies menu is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+  

@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const { NextApiRequest, NextApiResponse } = require('next');
+// import { IPlat } from '@/utils/interfaces';
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -52,10 +53,10 @@ app.post('/plats', async (req: typeof NextApiRequest, res: typeof NextApiRespons
 
 app.get('/taules', async (req: typeof NextApiRequest, res: typeof NextApiResponse) => {
   try {
-    const idRestaurant = req.params.idRestaurant;
+    const idRestaurant = req.query.idRestaurant;
     const allTaules = await prisma.taula.findMany({
       where: {
-        idRestaurant: idRestaurant
+        idRestaurant: Number(idRestaurant),
       }
     });
     res.json(allTaules)
@@ -91,6 +92,64 @@ app.post('/taules', async (req: typeof NextApiRequest, res: typeof NextApiRespon
     res.json({ error: e.message })
   }
 })
+
+app.get('/comanda', async (req: typeof NextApiRequest, res: typeof NextApiResponse) => {
+  try {
+    // const idRestaurant = req.params.idRestaurant;
+    const idTaula = req.query.idTaula;
+    const comandaActiva = await prisma.comanda.findMany({
+      where: {
+        // idRestaurant: idRestaurant,
+        idTaula: Number(idTaula),
+        dataFi: null
+      },
+      include: {
+        taula: true
+      }
+    });
+    res.json(comandaActiva)
+  }
+  catch (e: any) {
+    res.json({ error: e.message })
+  }
+})
+
+app.get('/liniesComanda', async (req: typeof NextApiRequest, res: typeof NextApiResponse) => {
+  try {
+    const idComanda = req.query.idComanda;
+    const liniesComanda = await prisma.liniaComanda.findMany({
+      where: {
+        idComanda: Number(idComanda)
+      },
+      include: {
+        plat: true
+      }
+    });
+    res.json(liniesComanda)
+  }
+  catch (e: any) {
+    res.json({ error: e.message })
+  }
+})
+
+app.get('/liniesMenu', async (req: typeof NextApiRequest, res: typeof NextApiResponse) => {
+  try {
+    const idComanda = req.query.idComanda;
+    const liniesMenu = await prisma.liniaMenu.findMany({
+      where: {
+        idComanda: Number(idComanda)
+      },
+      include: {
+        menu: true
+      }
+    });
+    res.json(liniesMenu)
+  }
+  catch (e: any) {
+    res.json({ error: e.message })
+  }
+})
+
 
 // async function main() {
 //   // TODO: Escriure Prisma Client queries
