@@ -85,4 +85,19 @@ export function getLiniesMenu (idComanda: string): Promise<ILiniaComanda[]> {
         return res 
     })
 }
+
+export function updateQtyLiniaComanda(id: number, novaQuantitat: number): Promise<ILiniaComanda> {
+    return fetch(`/api/liniesComanda/update?id=${id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({novaQuantitat: novaQuantitat})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
   

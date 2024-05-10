@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faEuroSign, faSquarePlus, faSquareMinus, faFloppyDisk, faTrash} from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 import { IComanda, ILiniaComanda, ILiniaMenu } from '@/utils/interfaces';
-import { getComanda, getLiniesComanda, getLiniesMenu } from '@/utils/api';
+import { getComanda, getLiniesComanda, getLiniesMenu, updateQtyLiniaComanda } from '@/utils/api';
 import { get } from 'http';
 import { response } from 'express';
 import { Console, error } from 'console';
@@ -15,24 +15,21 @@ const comandaActual: React.FC = () => {
   
   const [comanda, setComanda] = useState<IComanda[]>([]);
   const [comandaCarregada, setComandaCarregada] = useState(false);
+  const [quantitatModificada, setQuantitatModificada] = useState(false);
   const [liniesComanda, setLiniesComanda] = useState<ILiniaComanda[]>([]);
   const [liniesMenu, setLiniesMenu] = useState<ILiniaMenu[]>([]);
 
-  const [quantitatActual, setQuantitat] = useState([1,1,1,1]); // Estat per emmagatzemar la quantitat d'un plat
+  // const [quantitatActual, setQuantitat] = useState([1,1,1,1]); // Estat per emmagatzemar la quantitat d'un plat
 
-  // Event incrementat quantitat
-  const incrementarQuantitat = (index: number) => {
-    const novesQuantitats = [...quantitatActual];
-    novesQuantitats[index] = novesQuantitats[index] + 1;
-    setQuantitat(novesQuantitats);
-  };
-
-  // Event decrementat quantitat
-  const decrementarQuantitat = (index: number) => {
-    const novesQuantitats = [...quantitatActual];
-    if (novesQuantitats[index] > 1) {
-      novesQuantitats[index] = novesQuantitats[index] - 1;
-      setQuantitat(novesQuantitats);
+  const modificarQuantitat = (idLiniaComanda: number, novaQuantitat: number) => {
+    if(idLiniaComanda && novaQuantitat){
+      updateQtyLiniaComanda(idLiniaComanda, novaQuantitat)
+      .then(response => {
+        setQuantitatModificada(true);
+      })
+      .catch((error) => {
+        console.error('Error when update qty linia comanda: ', error);
+      });
     }
   };
 
@@ -47,7 +44,7 @@ const comandaActual: React.FC = () => {
         console.error('Error when get comanda: ', error);
       });
     }
-  }, [])
+  }, [quantitatModificada])
 
   useEffect(() => {
     if(comandaCarregada && comanda){
@@ -55,13 +52,13 @@ const comandaActual: React.FC = () => {
       .then(response => {
         setLiniesComanda(response)
         setComandaCarregada(false)
-        
+        setQuantitatModificada(false)
       })
       .catch((error) => {
         console.error('Error when get linies comanda: ', error);
       });
     }
-  }, [comandaCarregada])
+  }, [comandaCarregada, quantitatModificada])
 
   useEffect(() => {
     if(comandaCarregada && comanda){
@@ -69,7 +66,6 @@ const comandaActual: React.FC = () => {
       .then(response => {
         setLiniesMenu(response)
         setComandaCarregada(false)
-        
       })
       .catch((error) => {
         console.error('Error when get linies menu: ', error);
@@ -95,14 +91,14 @@ const comandaActual: React.FC = () => {
 
             {liniesComanda && liniesComanda.map((liniaComanda, index) => {
               return (
-                <article key={index} className="grid grid-cols-1 md:grid-cols-6 mb-2 m-1 p-1 bg-vanilla-800 shadow-md rounded-md">
+                <article key={liniaComanda.id} className="grid grid-cols-1 md:grid-cols-6 mb-2 m-1 p-1 bg-vanilla-800 shadow-md rounded-md">
                 <article className="p-2 text-center col-span-1 md:col-span-3 break-all">{liniaComanda.plat.nom}</article>
                 <article className="p-2 text-center col-span-1">
-                  <button onClick={() => decrementarQuantitat(0)} className="quantity-modifier-btn mr-5">
+                  <button onClick={() => modificarQuantitat(liniaComanda.id, Number(liniaComanda.quantitat - 1))} className="quantity-modifier-btn mr-5">
                     <FontAwesomeIcon icon={faSquareMinus} style={{color: "red"}} size='xl'/>
                   </button>
                   {liniaComanda.quantitat}
-                  <button onClick={() => incrementarQuantitat(0)} className="quantity-modifier-btn ml-5">
+                  <button onClick={() => modificarQuantitat(liniaComanda.id, Number(liniaComanda.quantitat + 1))} className="quantity-modifier-btn ml-5">
                     <FontAwesomeIcon icon={faSquarePlus} style={{color: "green"}} size='xl'/>
                   </button>
                 </article>
@@ -138,9 +134,9 @@ const comandaActual: React.FC = () => {
           </section>
 
         <div className="mt-5 flex justify-center">
-          <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
+          {/* <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
             Guardar <FontAwesomeIcon icon={faFloppyDisk}/>
-          </button>
+          </button> */}
           <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
             Pagar <FontAwesomeIcon icon={faEuroSign}/>
           </button>
