@@ -1,10 +1,7 @@
-import { IComanda, ILiniaComanda, IPlat, ITaula } from "./interfaces";
-
-
-const ENDPOINT = "http://localhost:5000"
+import { IComanda, ILiniaComanda, ITaula } from "./interfaces";
 
 export function getTaules (idRestaurant: string): Promise<ITaula[]> {
-    return fetch(`${ENDPOINT}/taules?idRestaurant=${idRestaurant}`, {
+    return fetch(`/api/taules/get?idRestaurant=${idRestaurant}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"
@@ -18,12 +15,12 @@ export function getTaules (idRestaurant: string): Promise<ITaula[]> {
 }
 
 export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula> {
-    return fetch(`${ENDPOINT}/taules`, {
+    return fetch(`/api/taules/add`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json"
         },
-        body: JSON.stringify({idRestaurant, numTaula, afegir: true})
+        body: JSON.stringify({idRestaurant, numTaula})
     }).then(res => {
         if (!res.ok) throw new Error('Response is not OK')
         return res.json()
@@ -33,12 +30,12 @@ export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula
   }
 
   export function deleteTaula(idRestaurant: number, numTaula: number): Promise<ITaula> {
-    return fetch(`${ENDPOINT}/taules`, {
-        method: 'POST',
+    return fetch(`/api/taules/delete`, {
+        method: 'DELETE',
         headers: {
             "Content-type": "application/json"
         },
-        body: JSON.stringify({idRestaurant, numTaula, afegir: false})
+        body: JSON.stringify({idRestaurant, numTaula})
     }).then(res => {
         if (!res.ok) throw new Error('Response is not OK')
         return res.json()
@@ -48,7 +45,7 @@ export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula
   }
 
   export function getComanda (idTaula: string): Promise<IComanda> {
-    return fetch(`${ENDPOINT}/comanda?idTaula=${idTaula}`, {
+    return fetch(`/api/comanda/get?idTaula=${idTaula}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"
@@ -62,7 +59,7 @@ export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula
 }
 
 export function getLiniesComanda (idComanda: string): Promise<ILiniaComanda[]> {
-    return fetch(`${ENDPOINT}/liniesComanda?idComanda=${idComanda}`, {
+    return fetch(`/api/liniesComanda/get?idComanda=${idComanda}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"
@@ -76,7 +73,7 @@ export function getLiniesComanda (idComanda: string): Promise<ILiniaComanda[]> {
 }
 
 export function getLiniesMenu (idComanda: string): Promise<ILiniaComanda[]> {
-    return fetch(`${ENDPOINT}/liniesMenu?idComanda=${idComanda}`, {
+    return fetch(`/api/liniesMenu/get?idComanda=${idComanda}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"

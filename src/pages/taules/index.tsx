@@ -5,9 +5,10 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { response } from 'express';
 import { useUser } from '@nextui-org/react';
-import { getTaules, addTaula, deleteTaula } from "../../utils/api";
+import { getTaules, addTaula, deleteTaula } from "@/utils/api";
 import { ITaula } from '@/utils/interfaces';
 import { error } from 'console';
+import { get } from 'http';
 
 const Taules: React.FC = () => {
   const [taules, setTaules] = useState<ITaula[]>([]);
