@@ -1,4 +1,4 @@
-import { IComanda, ILiniaComanda, ITaula } from "./interfaces";
+import { IComanda, ILiniaComanda, ILiniaMenu, ITaula } from "./interfaces";
 
 export function getTaules (idRestaurant: string): Promise<ITaula[]> {
     return fetch(`/api/taules/get?idRestaurant=${idRestaurant}`, {
@@ -101,3 +101,32 @@ export function updateQtyLiniaComanda(id: number, novaQuantitat: number): Promis
     })
   }
   
+  export function deleteLiniaComanda(id: number): Promise<ILiniaComanda> {
+    return fetch(`/api/liniesComanda/delete`, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({id})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
+  export function deleteLiniaMenu(id: number): Promise<ILiniaMenu> {
+    return fetch(`/api/liniesMenu/delete`, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({id})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }

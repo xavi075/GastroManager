@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faEuroSign, faSquarePlus, faSquareMinus, faFloppyDisk, faTrash} from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 import { IComanda, ILiniaComanda, ILiniaMenu } from '@/utils/interfaces';
-import { getComanda, getLiniesComanda, getLiniesMenu, updateQtyLiniaComanda } from '@/utils/api';
+import { getComanda, getLiniesComanda, getLiniesMenu, updateQtyLiniaComanda, deleteLiniaComanda, deleteLiniaMenu } from '@/utils/api';
 import { get } from 'http';
 import { response } from 'express';
 import { Console, error } from 'console';
@@ -15,7 +15,7 @@ const comandaActual: React.FC = () => {
   
   const [comanda, setComanda] = useState<IComanda[]>([]);
   const [comandaCarregada, setComandaCarregada] = useState(false);
-  const [quantitatModificada, setQuantitatModificada] = useState(false);
+  const [liniesModificades, setliniesModificades] = useState(false);
   const [liniesComanda, setLiniesComanda] = useState<ILiniaComanda[]>([]);
   const [liniesMenu, setLiniesMenu] = useState<ILiniaMenu[]>([]);
 
@@ -25,10 +25,34 @@ const comandaActual: React.FC = () => {
     if(idLiniaComanda && novaQuantitat){
       updateQtyLiniaComanda(idLiniaComanda, novaQuantitat)
       .then(response => {
-        setQuantitatModificada(true);
+        setliniesModificades(true);
       })
       .catch((error) => {
         console.error('Error when update qty linia comanda: ', error);
+      });
+    }
+  };
+
+  const eliminarLiniaComanda = (idLiniaComanda: number) => {
+    if(idLiniaComanda){
+      deleteLiniaComanda(idLiniaComanda)
+      .then(response => {
+        setliniesModificades(true);
+      })
+      .catch((error) => {
+        console.error('Error when delete linia comanda: ', error);
+      });
+    }
+  };
+
+  const eliminarLiniaMenu = (idLiniaMenu: number) => {
+    if(idLiniaMenu){
+      deleteLiniaMenu(idLiniaMenu)
+      .then(response => {
+        setliniesModificades(true);
+      })
+      .catch((error) => {
+        console.error('Error when delete linia menu: ', error);
       });
     }
   };
@@ -44,7 +68,7 @@ const comandaActual: React.FC = () => {
         console.error('Error when get comanda: ', error);
       });
     }
-  }, [quantitatModificada])
+  }, [liniesModificades])
 
   useEffect(() => {
     if(comandaCarregada && comanda){
@@ -52,13 +76,13 @@ const comandaActual: React.FC = () => {
       .then(response => {
         setLiniesComanda(response)
         setComandaCarregada(false)
-        setQuantitatModificada(false)
+        setliniesModificades(false)
       })
       .catch((error) => {
         console.error('Error when get linies comanda: ', error);
       });
     }
-  }, [comandaCarregada, quantitatModificada])
+  }, [comandaCarregada, liniesModificades])
 
   useEffect(() => {
     if(comandaCarregada && comanda){
@@ -104,7 +128,7 @@ const comandaActual: React.FC = () => {
                 </article>
                 <article className="p-2 text-center col-span-1">{liniaComanda.preuTotal}€</article>
                 <article className="p-2 text-center col-span-1">
-                  <button>
+                  <button onClick={() => eliminarLiniaComanda(liniaComanda.id)}>
                     <FontAwesomeIcon icon={faTrash} style={{color: "red"}} size='xl'/>
                   </button>
                 </article>
@@ -114,12 +138,12 @@ const comandaActual: React.FC = () => {
 
             {liniesMenu && liniesMenu.map((liniaMenu, index) => {
               return (
-                <article key={index} className="grid grid-cols-1 md:grid-cols-6 mb-2 m-1 p-1 bg-vanilla-800 shadow-md rounded-md">
+                <article key={liniaMenu.id} className="grid grid-cols-1 md:grid-cols-6 mb-2 m-1 p-1 bg-vanilla-800 shadow-md rounded-md">
                 <article className="p-2 text-center col-span-1 md:col-span-3 break-all">{liniaMenu.menu.nom}</article>
                 <article className="p-2 text-center col-span-1">1</article>
                 <article className="p-2 text-center col-span-1">{liniaMenu.menu.preu}€</article>
                 <article className="p-2 text-center col-span-1">
-                  <button>
+                  <button onClick={() => eliminarLiniaMenu(liniaMenu.id)}>
                     <FontAwesomeIcon icon={faTrash} style={{color: "red"}} size='xl'/>
                   </button>
                 </article>
