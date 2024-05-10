@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'; // Importem useRouter per gestionar la 
 const Personal: React.FC = () => {
   const [usuaris, setUsuaris] = useState<{ nom: string; cognom: string; rol: string; correu: string }[]>([
     { nom: 'Ferran', cognom: 'Casanovas', rol: 'Cuiner', correu: 'ferran@gmail.com' },
-    { nom: 'Xavier', cognom: 'Massana', rol: 'Manager', correu: 'xavier@gmail.com' },
+    { nom: 'Xavier', cognom: 'Massana', rol: 'Cuiner', correu: 'xavier@gmail.com' },
     { nom: 'Arnau', cognom: 'Parcerisa', rol: 'Cambrer', correu: 'arnau@gmail.com' },
     { nom: 'Queralt', cognom: 'del Águila', rol: 'Cambrer', correu: 'queralt@gmail.com' },
   ]);
@@ -44,7 +44,7 @@ const Personal: React.FC = () => {
                 </div>
                 <div className="p-3 flex justify-center">
                   <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-1 px-2 rounded text-sm" onClick={() => eliminarUsuari(index)}>
-                    <FontAwesomeIcon icon={faMinus}/> Eliminar Usuari
+                    Eliminar Usuari <FontAwesomeIcon icon={faMinus}/>
                   </button>
                 </div>
               </div>

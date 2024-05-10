@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model comanda {
+  id           Int            @id @default(autoincrement())
+  preu         Decimal        @default(0.00) @db.Decimal(5, 2)
+  pagat        Boolean        @default(false)
+  dataInici    DateTime       @db.DateTime(0)
+  dataFi       DateTime?      @db.DateTime(0)
+  idTaula      Int?
+  taula        taula?         @relation(fields: [idTaula], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "comanda_ibfk_1")
+  liniaComanda liniaComanda[]
+  liniaMenu    liniaMenu[]
+
+  @@index([idTaula], map: "idTaula")
+}
+
+model grupPlat {
+  id                                   Int         @id @default(autoincrement())
+  nomGrup                              String      @db.VarChar(100)
+  idRestaurant                         Int?
+  restaurant                           restaurant? @relation(fields: [idRestaurant], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupPlat_ibfk_1")
+  menu_menu_idGrupPrimerPlatTogrupPlat menu[]      @relation("menu_idGrupPrimerPlatTogrupPlat")
+  menu_menu_idGrupSegonPlatTogrupPlat  menu[]      @relation("menu_idGrupSegonPlatTogrupPlat")
+  menu_menu_idGrupPostresTogrupPlat    menu[]      @relation("menu_idGrupPostresTogrupPlat")
+  plat                                 plat[]
+
+  @@unique([nomGrup, idRestaurant], map: "nomGrup")
+  @@index([idRestaurant], map: "idRestaurant")
+}
+
+model liniaComanda {
+  id        Int      @id @default(autoincrement())
+  preuTotal Decimal  @default(0.00) @db.Decimal(5, 2)
+  quantitat Int      @default(1)
+  idComanda Int?
+  idPlat    Int?
+  comanda   comanda? @relation(fields: [idComanda], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "liniaComanda_ibfk_1")
+  plat      plat?    @relation(fields: [idPlat], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "liniaComanda_ibfk_2")
+
+  @@index([idComanda], map: "idComanda")
+  @@index([idPlat], map: "idPlat")
+}
+
+model liniaMenu {
+  id                                Int      @id @default(autoincrement())
+  idComanda                         Int?
+  idMenu                            Int?
+  idPrimerPlat                      Int?
+  idSegonPlat                       Int?
+  idPostres                         Int?
+  comanda                           comanda? @relation(fields: [idComanda], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "liniaMenu_ibfk_1")
+  menu                              menu?    @relation(fields: [idMenu], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "liniaMenu_ibfk_2")
+  plat_liniaMenu_idPrimerPlatToplat plat?    @relation("liniaMenu_idPrimerPlatToplat", fields: [idPrimerPlat], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "liniaMenu_ibfk_3")
+  plat_liniaMenu_idSegonPlatToplat  plat?    @relation("liniaMenu_idSegonPlatToplat", fields: [idSegonPlat], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "liniaMenu_ibfk_4")
+  plat_liniaMenu_idPostresToplat    plat?    @relation("liniaMenu_idPostresToplat", fields: [idPostres], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "liniaMenu_ibfk_5")
+
+  @@index([idComanda], map: "idComanda")
+  @@index([idMenu], map: "idMenu")
+  @@index([idPostres], map: "idPostres")
+  @@index([idPrimerPlat], map: "idPrimerPlat")
+  @@index([idSegonPlat], map: "idSegonPlat")
+}
+
+model menu {
+  id                                       Int         @id @default(autoincrement())
+  nom                                      String      @db.VarChar(100)
+  preu                                     Decimal     @db.Decimal(5, 2)
+  idRestaurant                             Int?
+  idGrupPrimerPlat                         Int?
+  idGrupSegonPlat                          Int?
+  idGrupPostres                            Int?
+  liniaMenu                                liniaMenu[]
+  restaurant                               restaurant? @relation(fields: [idRestaurant], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "menu_ibfk_1")
+  grupPlat_menu_idGrupPrimerPlatTogrupPlat grupPlat?   @relation("menu_idGrupPrimerPlatTogrupPlat", fields: [idGrupPrimerPlat], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "menu_ibfk_2")
+  grupPlat_menu_idGrupSegonPlatTogrupPlat  grupPlat?   @relation("menu_idGrupSegonPlatTogrupPlat", fields: [idGrupSegonPlat], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "menu_ibfk_3")
+  grupPlat_menu_idGrupPostresTogrupPlat    grupPlat?   @relation("menu_idGrupPostresTogrupPlat", fields: [idGrupPostres], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "menu_ibfk_4")
+
+  @@index([idGrupPostres], map: "idGrupPostres")
+  @@index([idGrupPrimerPlat], map: "idGrupPrimerPlat")
+  @@index([idGrupSegonPlat], map: "idGrupSegonPlat")
+  @@index([idRestaurant], map: "idRestaurant")
+}
+
+model plat {
+  id                                     Int            @id @default(autoincrement())
+  nom                                    String         @db.VarChar(100)
+  preu                                   Decimal        @db.Decimal(5, 2)
+  idGrup                                 Int?
+  liniaComanda                           liniaComanda[]
+  liniaMenu_liniaMenu_idPrimerPlatToplat liniaMenu[]    @relation("liniaMenu_idPrimerPlatToplat")
+  liniaMenu_liniaMenu_idSegonPlatToplat  liniaMenu[]    @relation("liniaMenu_idSegonPlatToplat")
+  liniaMenu_liniaMenu_idPostresToplat    liniaMenu[]    @relation("liniaMenu_idPostresToplat")
+  grupPlat                               grupPlat?      @relation(fields: [idGrup], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "plat_ibfk_1")
+
+  @@unique([nom, idGrup], map: "nom")
+  @@index([idGrup], map: "idGrup")
+}
+
+model restaurant {
+  id       Int        @id @default(autoincrement())
+  nom      String     @db.VarChar(100)
+  adreca   String     @db.VarChar(50)
+  nif      String     @unique(map: "nif") @db.VarChar(50)
+  grupPlat grupPlat[]
+  menu     menu[]
+  taula    taula[]
+  usuari   usuari[]
+}
+
+model rol {
+  id     Int      @id @default(autoincrement())
+  nomRol String   @unique(map: "nomRol") @db.VarChar(100)
+  usuari usuari[]
+}
+
+model taula {
+  id           Int         @id @default(autoincrement())
+  numTaula     Int
+  idRestaurant Int?
+  comanda      comanda[]
+  restaurant   restaurant? @relation(fields: [idRestaurant], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "taula_ibfk_1")
+
+  @@unique([numTaula, idRestaurant], map: "numTaula")
+  @@index([idRestaurant], map: "idRestaurant")
+}
+
+model usuari {
+  id                Int         @id @default(autoincrement())
+  email             String      @unique(map: "email") @db.VarChar(100)
+  nom               String      @db.VarChar(50)
+  contrasenya_hash  String      @db.VarChar(64)
+  dataCreacioUsuari DateTime?   @db.DateTime(0)
+  idRol             Int?
+  idRestaurant      Int?
+  rol               rol?        @relation(fields: [idRol], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuari_ibfk_1")
+  restaurant        restaurant? @relation(fields: [idRestaurant], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuari_ibfk_2")
+
+  @@index([idRestaurant], map: "idRestaurant")
+  @@index([idRol], map: "idRol")
+}
