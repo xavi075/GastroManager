@@ -1,4 +1,4 @@
-import { ITaula } from "./interfaces";
+import { ITaula, IGrupPlats } from "./interfaces";
 
 
 const ENDPOINT = "http://localhost:5000"
@@ -46,3 +46,18 @@ export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula
         return res 
     })
   }
+
+
+export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
+    return fetch(`${ENDPOINT}/grupsplats?idRestaurant=${idRestaurant}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get grupsplats is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}

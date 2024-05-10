@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { use, useEffect } from 'react';
 import { Plat } from './Plat';
 import { Button } from "@/utils/components";
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencil, faFolderPlus } from '@fortawesome/free-solid-svg-icons';
+import { get } from 'http';
+import { getGrupsPlats } from '@/utils/api';
 
 export const GrupsPlats = () => {
 
@@ -61,6 +63,16 @@ export const GrupsPlats = () => {
         // TODO: Add new functionalities like icons
         plats: LlistaBegudes
     }]
+
+    useEffect(() => {
+        getGrupsPlats(1)
+        .then(response => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.error('Error when get grupsplats: ', error);
+        });
+    })
 
     return (
         <section>
