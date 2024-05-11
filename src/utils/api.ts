@@ -1,55 +1,10 @@
-import { ITaula } from "./interfaces";
-import { IUsuari } from "./interfaces";
+import {IUsuari} from "./interfaces";
 
 const ENDPOINT = "http://localhost:5000"
 
-export function getTaules (idRestaurant: string): Promise<ITaula[]> {
-    return fetch(`${ENDPOINT}/taules?idRestaurant=${idRestaurant}`, {
-        method: 'GET',
-        headers: {
-            "Content-type": "application/json"
-        },
-    }).then(res => {
-        if (!res.ok) throw new Error('Response of get taules is not OK')
-        return res.json()
-    }).then( res => {
-        return res 
-    })
-}
 
-
-export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula> {
-    return fetch(`${ENDPOINT}/taules`, {
-        method: 'POST',
-        headers: {
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify({idRestaurant, numTaula, afegir: true})
-    }).then(res => {
-        if (!res.ok) throw new Error('Response is not OK')
-        return res.json()
-    }).then( res => {
-        return res 
-    })
-  }
-
-  export function deleteTaula(idRestaurant: number, numTaula: number): Promise<ITaula> {
-    return fetch(`${ENDPOINT}/taules`, {
-        method: 'POST',
-        headers: {
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify({idRestaurant, numTaula, afegir: false})
-    }).then(res => {
-        if (!res.ok) throw new Error('Response is not OK')
-        return res.json()
-    }).then( res => {
-        return res 
-    })
-  }
-
-export function getUsuaris (idRestaurant: string): Promise<IUsuari[]> {
-    return fetch(`${ENDPOINT}/usuaris?idRestaurant=${idRestaurant}`, {
+export function getUsuaris (id: string): Promise<IUsuari[]> {
+    return fetch(`${ENDPOINT}/api/usuaris?id=${id}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"
@@ -63,7 +18,7 @@ export function getUsuaris (idRestaurant: string): Promise<IUsuari[]> {
 }
 
 export function deleteUsuari(id: number): Promise<IUsuari> {
-    return fetch(`${ENDPOINT}/usuaris?id=${id}`, {
+    return fetch(`${ENDPOINT}/api/usuaris/delete?id=${id}`, {
         method: 'DELETE',
         headers: {
             "Content-type": "application/json"
@@ -76,13 +31,13 @@ export function deleteUsuari(id: number): Promise<IUsuari> {
     })
 }
 
-export function addUsuari(nom: string, email: string, contrasenya: string, idRol: number, idRestaurant: number): Promise<IUsuari> {
-    return fetch(`${ENDPOINT}/usuaris`, {
+export function addUsuari(nom: string, email: string, contrasenya: string, dataCreacioUsuari:Date, idRol: number, idRestaurant: number): Promise<IUsuari> {
+    return fetch(`${ENDPOINT}/api/usuaris/add`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json"
         },
-        body: JSON.stringify({nom, email, contrasenya, idRol, idRestaurant})
+        body: JSON.stringify({nom, email, contrasenya, dataCreacioUsuari, idRol, idRestaurant})
     }).then(res => {
         if (!res.ok) throw new Error('Response is not OK')
         return res.json()

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +10,9 @@ export default async function handler(
 ) {
     if (req.method === "POST") {
         try {
-            const { email, nom, contrasenya_hash, dataCreacioUsuari, idRol, idRestaurant } = req.body;
+            const { email, nom, contrasenya, dataCreacioUsuari, idRol, idRestaurant } = req.body;
+            const contrasenya_hash = await bcrypt.hash(contrasenya, 10);
+
             const nuevoUsuario = await prisma.usuari.create({
                 data: {
                     email,
@@ -28,3 +31,4 @@ export default async function handler(
         res.status(405).json({ error: "Method not allowed" });
     }
 }
+
