@@ -1,5 +1,5 @@
 import { ITaula } from "./interfaces";
-
+import { IUsuari } from "./interfaces";
 
 const ENDPOINT = "http://localhost:5000"
 
@@ -16,6 +16,7 @@ export function getTaules (idRestaurant: string): Promise<ITaula[]> {
         return res 
     })
 }
+
 
 export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula> {
     return fetch(`${ENDPOINT}/taules`, {
@@ -46,3 +47,46 @@ export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula
         return res 
     })
   }
+
+export function getUsuaris (idRestaurant: string): Promise<IUsuari[]> {
+    return fetch(`${ENDPOINT}/usuaris?idRestaurant=${idRestaurant}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get usuaris is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function deleteUsuari(id: number): Promise<IUsuari> {
+    return fetch(`${ENDPOINT}/usuaris?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function addUsuari(nom: string, email: string, contrasenya: string, idRol: number, idRestaurant: number): Promise<IUsuari> {
+    return fetch(`${ENDPOINT}/usuaris`, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({nom, email, contrasenya, idRol, idRestaurant})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
