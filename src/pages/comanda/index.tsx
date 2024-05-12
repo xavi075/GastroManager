@@ -19,8 +19,6 @@ const comandaActual: React.FC = () => {
   const [liniesComanda, setLiniesComanda] = useState<ILiniaComanda[]>([]);
   const [liniesMenu, setLiniesMenu] = useState<ILiniaMenu[]>([]);
 
-  // const [quantitatActual, setQuantitat] = useState([1,1,1,1]); // Estat per emmagatzemar la quantitat d'un plat
-
   const modificarQuantitat = (idLiniaComanda: number, novaQuantitat: number) => {
     if(idLiniaComanda && novaQuantitat){
       updateQtyLiniaComanda(idLiniaComanda, novaQuantitat)
@@ -170,9 +168,6 @@ const comandaActual: React.FC = () => {
           </section>
 
         <div className="mt-5 flex justify-center">
-          {/* <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
-            Guardar <FontAwesomeIcon icon={faFloppyDisk}/>
-          </button> */}
           <button onClick={() => pagarComanda(comanda[0].id)} className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
             Pagar <FontAwesomeIcon icon={faEuroSign}/>
           </button>
