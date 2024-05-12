@@ -39,6 +39,6 @@ Routes: Next.js is employed to manage the routes of the application, providing d
 
 ## Next Steps
 
-Implement the database to enable effective data interaction for the application in the web server.
+Implement the web services and database on our server.
 Continue developing new functionalities and enhancements in the user interface.
 Perform comprehensive testing to ensure code stability and quality.
