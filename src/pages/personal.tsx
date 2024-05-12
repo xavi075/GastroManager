@@ -1,29 +1,42 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/router'; // Importem useRouter per gestionar la navegació
+import { useRouter } from 'next/router';
+import { getUsuaris, getUsuari, deleteUsuari, addUsuari} from '@/utils/api';
+import { IUsuari } from '@/utils/interfaces';
+import {error} from 'console';
+
 
 const Personal: React.FC = () => {
-  const [usuaris, setUsuaris] = useState<{ nom: string; cognom: string; rol: string; correu: string }[]>([
-    { nom: 'Ferran', cognom: 'Casanovas', rol: 'Cuiner', correu: 'ferran@gmail.com' },
-    { nom: 'Xavier', cognom: 'Massana', rol: 'Cuiner', correu: 'xavier@gmail.com' },
-    { nom: 'Arnau', cognom: 'Parcerisa', rol: 'Cambrer', correu: 'arnau@gmail.com' },
-    { nom: 'Queralt', cognom: 'del Águila', rol: 'Cambrer', correu: 'queralt@gmail.com' },
-  ]);
-
-  const router = useRouter(); // Inicialitzem useRouter
-
+  const [usuaris, setUsuaris] = useState<IUsuari[]>([]);
+  
+  useEffect(() => {
+    fetch("api/usuaris/get")
+      .then((res) => res.json())
+      .then((data) => {
+        setUsuaris(data);
+      })
+      .catch((error) => console.error('Error al cargar usuarios:', error));
+  }, []);
+  const router = useRouter();
   const afegirUsuari = () => {
-    // Navegació cap a la nova pàgina d'afegir usuari quan es fa clic al botó
-    router.push('/AfegirUsuari');
+     router.push('/AfegirUsuari');
   };
 
-  const eliminarUsuari = (index: number) => {
-    const nousUsuaris = [...usuaris];
-    nousUsuaris.splice(index, 1);
-    setUsuaris(nousUsuaris);
-  };
+  const eliminarUsuari = (id: number) => {
+    deleteUsuari(id)
+      .then(() => {
+        cargarUsuaris();
+      })
+      .catch((error) => console.error('Error al eliminar usuario:', error));
+  }
+
+  const cargarUsuaris = () => {
+    getUsuaris()
+      .then((data) => {setUsuaris(data);})
+      .catch((error) => console.error('Error al cargar usuarios:', error));
+  }
 
   return (
     <Layout>
@@ -43,7 +56,7 @@ const Personal: React.FC = () => {
                   </div>
                 </div>
                 <div className="p-3 flex justify-center">
-                  <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-1 px-2 rounded text-sm" onClick={() => eliminarUsuari(index)}>
+                  <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-1 px-2 rounded text-sm" onClick={() => eliminarUsuari(usuari.id)}>
                     Eliminar Usuari <FontAwesomeIcon icon={faMinus}/>
                   </button>
                 </div>

@@ -10,7 +10,7 @@ export default async function handler(
 ) {
     if (req.method === "POST") {
         try {
-            const { email, nom, contrasenya, dataCreacioUsuari, idRol, idRestaurant } = req.body;
+            const { email, nom, contrasenya, dataCreacioUsuari, idRol} = req.body;
             const contrasenya_hash = await bcrypt.hash(contrasenya, 10);
 
             const nuevoUsuario = await prisma.usuari.create({
@@ -19,8 +19,7 @@ export default async function handler(
                     nom,
                     contrasenya_hash,
                     dataCreacioUsuari,
-                    idRol,
-                    idRestaurant
+                    idRol
                 },
             });
             res.status(200).json(nuevoUsuario);

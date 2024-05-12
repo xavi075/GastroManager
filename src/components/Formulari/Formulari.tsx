@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { Input, Button } from "@/utils/components";
 import RoleSelector from "./RoleSelector";
+import { getUsuaris, getUsuari, deleteUsuari, addUsuari} from '@/utils/api';
+import { IUsuari } from '@/utils/interfaces';
 
 export const Formulari = () => {
   const [formData, setFormData] = useState({
     nom: "",
     cognom: "",
     correu: "",
-    rol: "", // Afegim el camp 'rol' a l'estat del formulari
+    rol: "",
+    contrasenya: "" // Inicializado con una cadena vacía
+    
   });
+  
 
   const [submitted, setSubmitted] = useState(false);
 
@@ -27,6 +32,18 @@ export const Formulari = () => {
     setSubmitted(true);
     console.log(formData);
   };
+
+  const afegirUsuari = (nom: string, email: string, contrasenya: string, dataCreacioUsuari:Date, idRol: number) => {
+    addUsuari(nom, email, contrasenya, dataCreacioUsuari, idRol)
+      .then(() => {
+        getUsuaris()
+          .then((data) => {
+            setUsuaris(data);
+          })
+          .catch((error) => console.error('Error al cargar usuarios:', error));
+      })
+      .catch((error) => console.error('Error al afegir usuari:', error));
+  }
 
   return (
     <div className="bg-bronze-200 rounded-md m-2 flex flex-col items-center ">
@@ -60,6 +77,15 @@ export const Formulari = () => {
           className="col-span-2 md:col-span-1"
         />
 
+        <Input
+          label="Contrasenya"
+          name="contrasenya"
+          type="password" // Establecemos el tipo de input como "password"
+          value={formData.contrasenya}
+          onChange={handleInputChange}
+          className="col-span-2 md:col-span-1"
+        />
+
         {/* Afegim el selector de rol aquí */}
         <RoleSelector
           label="Rol"
@@ -69,9 +95,10 @@ export const Formulari = () => {
           className="col-span-2 md:col-span-1"
         />
 
-        <Button type="submit" className="text-white bg-bronze-500 col-span-2 w-1/2">
+        <Button onClick={() => afegirUsuari(formData.nom, formData.correu, formData.contrasenya, new Date(), formData.rol)} type="submit" className="text-white bg-bronze-500 col-span-2 w-1/2">
           Afegir
         </Button>
+
       </form>
     </div>
   );
