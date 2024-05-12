@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plat } from './Plat';
 import { Button } from "@/utils/components";
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencil, faFolderPlus } from '@fortawesome/free-solid-svg-icons';
+import { get } from 'http';
+import { getGrupsPlats, getMenus } from '@/utils/api';
+import { IGrupPlats, IMenu } from '@/utils/interfaces';
 
 export const GrupsPlats = () => {
 
@@ -62,14 +65,28 @@ export const GrupsPlats = () => {
         plats: LlistaBegudes
     }]
 
+    const [grupsPlats, setGrupsPlats] = useState<IGrupPlats[]>([]);
+
+    useEffect(() => {
+        getGrupsPlats(1)
+        .then(response => {
+            console.log(response);
+            setGrupsPlats(response);
+        })
+        .catch((error) => {
+            console.error('Error when get grupsplats: ', error);
+        });
+    }, [])
+
     return (
         <section>
             <h2 className='text-2xl font-bold m-2 text-center'>Carta de plats</h2>
-            {LlistaGrups.map(( grup ) => (
-                <article className={`${grup.color} rounded-md my-4 mx-auto text-center justify-center`}>
-                    <h3 className='text-2xl font-bold text-center text-gray-800 mb-4 pt-2'>{grup.nom}</h3>
+            {grupsPlats.map(( grup ) => (
+                // <article className={`${grup.color} rounded-md my-4 mx-auto text-center justify-center`}>
+                <article className={`bg-bronze-200 rounded-md my-4 mx-auto text-center justify-center`}>                    
+                    <h3 className='text-2xl font-bold text-center text-gray-800 mb-4 pt-2'>{grup.nomGrup}</h3>
                     <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 justify-items-center px-4'>
-                        {grup.plats.map((plat, index) => (
+                        {grup.plat.map((plat, index) => (
                             <Plat key={`id-${plat}`} nom={plat.nom} preu={plat.preu}/>
                         ))}
                     </div>

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { getMenus } from '@/utils/api';
+import { IMenu } from '@/utils/interfaces';
 
 
 
@@ -24,34 +26,47 @@ export const Menu = () => {
         preu: 19.95
     }]
 
+    const [menus, setMenus] = useState<IMenu[]>([]);
+
+    useEffect(() => {
+        getMenus(1)
+        .then(response => {
+            console.log(response);
+            setMenus(response);
+        })
+        .catch((error) => {
+            console.error('Error when get menus: ', error);
+        });
+    }, [])
+
     return (
         <section>
             <h2 className='text-2xl font-bold m-2 text-center '>Menús actuals</h2>
             <div className='grid grid-cols-1 xl:grid-cols-2 gap-4 justify-items-center'>
-                {Menus.map(( menu ) => (
+                {menus.map(( menu ) => (
                     <article className='bg-bronze-200 rounded-md my-4 text-center justify-center text-lg pb-4'>
                     <h3 className='text-2xl font-bold text-center text-gray-800 mb-4 pt-2 px-2'>{menu.nom}</h3>
                     <div className='px-0'>
                         <h4 className="text-lg font-bold mb-2">Primer Plat</h4>
                         <ul className='m-4 p-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.primers.map((primer) =>(
-                                <li>{primer}</li>
+                            {menu.grupPlat_menu_idGrupPrimerPlatTogrupPlat.plat.map((primer) =>(
+                                <li>{primer.nom}</li>
                             ))}
                         </ul>
                     </div>
                     <div>
                         <h4 className="text-lg font-bold mb-2">Segon Plat</h4>
                         <ul className='m-4 py-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.segons.map((segon) =>(
-                                <li>{segon}</li>
+                            {menu.grupPlat_menu_idGrupSegonPlatTogrupPlat.plat.map((segon) =>(
+                                <li>{segon.nom}</li>
                             ))}
                         </ul>
                     </div>
                     <div>
                         <h4 className="text-lg font-bold mb-2">Postre</h4>
                         <ul className='m-4 py-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.postres.map((postre) =>(
-                                <li>{postre}</li>
+                            {menu.grupPlat_menu_idGrupPostresTogrupPlat.plat.map((postre) =>(
+                                <li>{postre.nom}</li>
                             ))}
                         </ul>
                     </div>
