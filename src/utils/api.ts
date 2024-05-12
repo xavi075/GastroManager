@@ -1,4 +1,6 @@
-import { IComanda, ILiniaComanda, ILiniaMenu, ITaula } from "./interfaces";
+
+import { IComanda, ILiniaComanda, ILiniaMenu, ITaula, IGrupPlats, IMenu } from "./interfaces";
+
 
 export function getTaules (idRestaurant: string): Promise<ITaula[]> {
     return fetch(`/api/taules/get?idRestaurant=${idRestaurant}`, {
@@ -131,6 +133,20 @@ export function updateQtyLiniaComanda(id: number, novaQuantitat: number): Promis
     })
   }
 
+export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
+    return fetch(`/api/grupplats/get?idRestaurant=${idRestaurant}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get grupsplats is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
   export function updateComanda(id: number): Promise<IComanda> {
     return fetch(`/api/comanda/update?id=${id}`, {
         method: 'PUT',
@@ -140,6 +156,20 @@ export function updateQtyLiniaComanda(id: number, novaQuantitat: number): Promis
         body: JSON.stringify({})
     }).then(res => {
         if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getMenus(idRestaurant: number): Promise<IMenu[]> {
+    return fetch(`/api/menus/get?idRestaurant=${idRestaurant}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get grupsplats is not OK')
         return res.json()
     }).then( res => {
         return res 
