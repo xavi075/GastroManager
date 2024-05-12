@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Layout from '../components/Layout/Layout';
+import Layout from '../../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
@@ -47,12 +47,12 @@ const Personal: React.FC = () => {
             <div key={index} className="border-1 border-solid border-black border-md rounded-lg bg-vanilla text-center transition-colors duration-200 ease-in-out relative">
               <div className="grid grid-cols-1">
                 <div className="p-3 overflow-hidden">
-                  <h2 className="text-xl font-bold text-center">{usuari.nom} {usuari.cognom}</h2>
+                  <h2 className="text-xl font-bold text-center">{usuari.nom}</h2>
                 </div>
                 <div className="p-3 overflow-hidden">
                   <div className="text-left">
-                    <p><strong>Rol:</strong> {usuari.rol}</p>
-                    <p><strong>Correu:</strong> {usuari.correu}</p>
+                    <p><strong>Rol:</strong> {usuari.rol.nomRol}</p>
+                    <p><strong>Correu:</strong> {usuari.email}</p>
                   </div>
                 </div>
                 <div className="p-3 flex justify-center">

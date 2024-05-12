@@ -128,7 +128,7 @@ export function getLiniesComanda (idComanda: string): Promise<ILiniaComanda[]> {
     })
 }
 
-export function getLiniesMenu (idComanda: string): Promise<ILiniaComanda[]> {
+export function getLiniesMenu (idComanda: string): Promise<ILiniaMenu[]> {
     return fetch(`/api/liniesMenu/get?idComanda=${idComanda}`, {
         method: 'GET',
         headers: {

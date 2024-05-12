@@ -81,7 +81,7 @@ const comandaActual: React.FC = () => {
   }, [liniesModificades])
 
   useEffect(() => {
-    if(comandaCarregada && comanda){
+    if(comandaCarregada && comanda.length > 0){
       getLiniesComanda(String(comanda[0].id))
       .then(response => {
         setLiniesComanda(response)
@@ -95,7 +95,7 @@ const comandaActual: React.FC = () => {
   }, [comandaCarregada, liniesModificades])
 
   useEffect(() => {
-    if(comandaCarregada && comanda){
+    if(comandaCarregada && comanda.length > 0){
       getLiniesMenu(String(comanda[0].id))
       .then(response => {
         setLiniesMenu(response)

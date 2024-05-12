@@ -22,7 +22,7 @@ To install Gastromanager, follow these steps:
 
 ## Usage
 
-To use Gastromanager, start the server with `npm start` and navigate to `http://localhost:3000` in your web browser. From there, you can access the various features of the application.
+To use Gastromanager, start the server with `npm start` and navigate to `http://localhost:3000` in your web browser. From there, you can access the various features of the application. It should be taken into account that for this version of the application at least one restaurant must be added to the database.
 
 ## Technologies Used
 
