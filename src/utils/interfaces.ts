@@ -2,7 +2,8 @@ export interface ITaula {
     id: number
     idRestaurant: number
     numTaula: number
-}
+  }
+  
 
 export interface IRestaurant {
   id: number
@@ -79,4 +80,3 @@ export interface IGrupPlats {
   color: string
   plat: IPlat[]
 }
-
