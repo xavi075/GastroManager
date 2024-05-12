@@ -18,7 +18,7 @@ To install Gastromanager, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/yourusername/gastromanager.git`
 2. Navigate to the project directory: `cd gastromanager`
-3. Install the dependencies: `npm install`
+3. Install the dependencies: `npm run dev`
 
 ## Usage
 
