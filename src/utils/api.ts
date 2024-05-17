@@ -186,9 +186,12 @@ export function deleteLiniaMenu(id: number): Promise<ILiniaMenu> {
         return res 
     })
 }
-
-export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
-    return fetch(`/api/grupplats/get?idRestaurant=${idRestaurant}`, {
+export function getGrupsPlats(idRestaurant: number, idGrup?: string): Promise<IGrupPlats[]> {
+    let url = `/api/grupplats/get?idRestaurant=${idRestaurant}`;
+    if (idGrup) {
+        url += `&idGrup=${idGrup}`;
+    }
+    return fetch(url, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"

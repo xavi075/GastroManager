@@ -10,60 +10,60 @@ import { IGrupPlats, IMenu } from '@/utils/interfaces';
 
 export const GrupsPlats = () => {
 
-    const LlistaPlats = [{
-        nom: "Patates Braves",
-        preu: 5.50
-    }, 
-    {
-        nom: "Olives",
-        preu: 1.50
-    },
-    {
-        nom: "Patates Xips",
-        preu: 2
-    },
-    {
-        nom: "Patates Xips petites",
-        preu: 1.60
-    },
-    {
-        nom: "Fruits Secs",
-        preu: 1.90
-    },
-    {
-        nom: "Escopinyes",
-        preu: 5.90
-    }]
+    // const LlistaPlats = [{
+    //     nom: "Patates Braves",
+    //     preu: 5.50
+    // }, 
+    // {
+    //     nom: "Olives",
+    //     preu: 1.50
+    // },
+    // {
+    //     nom: "Patates Xips",
+    //     preu: 2
+    // },
+    // {
+    //     nom: "Patates Xips petites",
+    //     preu: 1.60
+    // },
+    // {
+    //     nom: "Fruits Secs",
+    //     preu: 1.90
+    // },
+    // {
+    //     nom: "Escopinyes",
+    //     preu: 5.90
+    // }]
 
-    const LlistaBegudes = [{
-        nom: "Aigua (50 ml)",
-        preu: 1.90
-    }, 
-    {
-        nom: "Estrella Damm",
-        preu: 2.20
-    },
-    {
-        nom: "Coca-Cola",
-        preu: 2.50
-    },
-    {
-        nom: "Fanta de Taronja",
-        preu: 2.40
-    }]
+    // const LlistaBegudes = [{
+    //     nom: "Aigua (50 ml)",
+    //     preu: 1.90
+    // }, 
+    // {
+    //     nom: "Estrella Damm",
+    //     preu: 2.20
+    // },
+    // {
+    //     nom: "Coca-Cola",
+    //     preu: 2.50
+    // },
+    // {
+    //     nom: "Fanta de Taronja",
+    //     preu: 2.40
+    // }]
 
-    const LlistaGrups = [{
-        nom: "Tapes",
-        color: "bg-bronze-200",
-        // TODO: Add new functionalities like icons
-        plats: LlistaPlats
-    },
-    {  
-        nom: "Begudes",
-        color: "bg-sky-200",
-        // TODO: Add new functionalities like icons
-        plats: LlistaBegudes
-    }]
+    // const LlistaGrups = [{
+    //     nom: "Tapes",
+    //     color: "bg-bronze-200",
+    //     // TODO: Add new functionalities like icons
+    //     plats: LlistaPlats
+    // },
+    // {  
+    //     nom: "Begudes",
+    //     color: "bg-sky-200",
+    //     // TODO: Add new functionalities like icons
+    //     plats: LlistaBegudes
+    // }]
 
     const [grupsPlats, setGrupsPlats] = useState<IGrupPlats[]>([]);
 
