@@ -76,7 +76,11 @@ export interface IMenu {
 }
 
 export interface IGrupPlats {
+  id: number
   nomGrup: string
   color: string
   plat: IPlat[]
 }
+
+export type IGrupPlatsResponse = IGrupPlats | IGrupPlats [];
+

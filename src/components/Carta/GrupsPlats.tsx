@@ -91,7 +91,7 @@ export const GrupsPlats = () => {
                         ))}
                     </div>
                     {/* TODO: Onclick function */}
-                    <Link href={"/editaGrupPlats"}>
+                    <Link href={`/editaGrupPlats?idGrup=${grup.id}`}>
                         <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2">
                             Edita <FontAwesomeIcon icon={faPencil}/>
                         </button>

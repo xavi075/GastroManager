@@ -186,11 +186,23 @@ export function deleteLiniaMenu(id: number): Promise<ILiniaMenu> {
         return res 
     })
 }
-export function getGrupsPlats(idRestaurant: number, idGrup?: string): Promise<IGrupPlats[]> {
+export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
     let url = `/api/grupplats/get?idRestaurant=${idRestaurant}`;
-    if (idGrup) {
-        url += `&idGrup=${idGrup}`;
-    }
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get grupsplats is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getGrupPlats(idRestaurant: number, idGrup?: string): Promise<IGrupPlats> {
+    let url = `/api/grupplats/get?idRestaurant=${idRestaurant}&idGrup=${idGrup}`;
     return fetch(url, {
         method: 'GET',
         headers: {
