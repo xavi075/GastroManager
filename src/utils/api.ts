@@ -175,3 +175,21 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
         return res 
     })
   }
+<<<<<<< HEAD
+=======
+
+  export function addComanda(idTaula: number): Promise<IComanda> {
+    return fetch(`/api/comanda/add?idTaula=${idTaula}`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+>>>>>>> c1aed23 (Afegida funcionalitat d'una nova comanda)
