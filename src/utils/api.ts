@@ -175,8 +175,6 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
         return res 
     })
   }
-<<<<<<< HEAD
-=======
 
   export function addComanda(idTaula: number): Promise<IComanda> {
     return fetch(`/api/comanda/add?idTaula=${idTaula}`, {
@@ -192,4 +190,3 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
         return res 
     })
   }
->>>>>>> c1aed23 (Afegida funcionalitat d'una nova comanda)
