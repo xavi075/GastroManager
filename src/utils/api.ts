@@ -244,3 +244,18 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
         return res 
     })
 }
+
+export function addGrupPlats(idRestaurant: number, nomGrup: string): Promise<IGrupPlats> {
+    return fetch(`/api/grupplats/add`, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idRestaurant, nomGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
