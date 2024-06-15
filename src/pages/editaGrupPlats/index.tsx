@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faFloppyDisk, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { IGrupPlats } from "@/utils/interfaces";
-import { addGrupPlats, getGrupPlats, getGrupsPlats, updateGrupPlats, updatePlat } from "@/utils/api";
+import { addGrupPlats, addPlat, getGrupPlats, getGrupsPlats, updateGrupPlats, updatePlat } from "@/utils/api";
 
 
 export default function editaGrupPlats (){
@@ -22,6 +22,10 @@ export default function editaGrupPlats (){
     const [selectedPlat, setSelectedPlat] = useState<number | null>(null); // Estat per al plat seleccionat
     const [platName, setPlatName] = useState('');
     const [platPreu, setPlatPreu] = useState<number>(0);
+
+    const [newPlatName, setNewPlatName] = useState('');
+    const [newPlatPreu, setNewPlatPreu] = useState<number>(0);
+
     const [refresh, setRefresh] = useState<boolean>(false);
 
     const [grupsPlats, setGrupsPlats] = useState<IGrupPlats>();
@@ -31,7 +35,7 @@ export default function editaGrupPlats (){
       const idGrupFromUrl = router.asPath.split('=')[1];
       setIdGrup(idGrupFromUrl);
     }
-  }, [router.isReady]);
+  }, [router.isReady, router.asPath]);
         
     useEffect(() => {
         // TODO: agadar el id del grup des de la url
@@ -63,6 +67,14 @@ export default function editaGrupPlats (){
     const handlePlatNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPlatName(e.target.value);
     };
+
+    const handleNewPlatNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewPlatName(e.target.value);
+    };
+
+    const handleNewPlatPreuChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewPlatPreu(parseFloat(e.target.value));
+    };
     
     // TODO: This must work for multiple prices
     const handlePlatPreuChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +92,8 @@ export default function editaGrupPlats (){
             .then(response => {
                 console.log(response);
 
-                router.push(`/editaGrupPlats?id=${response.id}`);
+                router.push(`/editaGrupPlats?idGrup=${response.id}`);
+                setRefresh(!refresh);
             })
             .catch((error) => {
                 console.error('Error when get grupsplats: ', error);
@@ -111,6 +124,22 @@ export default function editaGrupPlats (){
         });
         console.log(nom, preu, idGrup)
     };
+
+    const handleAddPlat = () => {
+        console.log('Afegint plat', newPlatName, newPlatPreu, grupsPlats?.id);
+        if (grupsPlats?.id == undefined) return;
+        addPlat(1, newPlatName, newPlatPreu, grupsPlats?.id)
+        .then(response => {
+            console.log(response);
+            setRefresh(!refresh);
+            setNewPlatName('');
+            setNewPlatPreu(0);
+        })
+        .catch((error) => {
+            console.error('Error when update plats: ', error);
+        });
+
+    }
 
     const handleDeletePlat = (platId: number) => {
     };
@@ -202,7 +231,7 @@ export default function editaGrupPlats (){
                             <Input
                                 label="Nom del plat"
                                 // value={platName}
-                                // onChange={handlePlatNameChange}
+                                onChange={handleNewPlatNameChange}
                             />
                             <Input
                                 type="number"
@@ -210,14 +239,14 @@ export default function editaGrupPlats (){
                                 // value={platPreu.toString()}
                                 min={0}
                                 step={0.01}
-                                // onChange={handlePlatPreuChange}
+                                onChange={handleNewPlatPreuChange}
                                 endContent={
                                     <div className="flex items-center">
                                         <span className="text-default-400 text-small">€</span>
                                     </div>
                                 }
                             />
-                            <button className="col-span-2 bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded m-2 ml-2">
+                            <button onClick={handleAddPlat} className="col-span-2 bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded m-2 ml-2">
                                 Afegeix <FontAwesomeIcon icon={faPlus} />
                             </button>
                         </article>

@@ -275,6 +275,21 @@ export function updatePlat(idRestaurant: number, idPlat: number, nomPlat: string
     })
 }
 
+export function addPlat(idRestaurant: number, nomPlat: string, preu: number, idGrup: number): Promise<IGrupPlats> {
+    return fetch(`/api/plats/add`, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idRestaurant, nomPlat, preu, idGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
 export function updateGrupPlats(idGrup: number, nomGrup: string): Promise<IGrupPlats> {
     return fetch(`/api/grupplats/update`, {
         method: 'PUT',

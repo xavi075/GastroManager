@@ -99,7 +99,7 @@ export const GrupsPlats = () => {
                 </article>    
             ))}  
 
-            <a href="/nueva-pagina" className="block bg-bronze-500 hover:bg-bronze-700 text-white font-bold py-2 px-4 rounded mx-auto text-center">
+            <a href="/editaGrupPlats" className="block bg-bronze-500 hover:bg-bronze-700 text-white font-bold py-2 px-4 rounded mx-auto text-center">
                 Afegir un nou grup <FontAwesomeIcon icon={faFolderPlus}/>
             </a>
         </section>
