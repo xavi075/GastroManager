@@ -259,3 +259,33 @@ export function addGrupPlats(idRestaurant: number, nomGrup: string): Promise<IGr
         return res 
     })
 }
+
+export function updatePlat(idRestaurant: number, idPlat: number, nomPlat: string, preu: number, idGrup: number): Promise<IGrupPlats> {
+    return fetch(`/api/plats/update`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idRestaurant, idPlat, nomPlat, preu, idGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function updateGrupPlats(idGrup: number, nomGrup: string): Promise<IGrupPlats> {
+    return fetch(`/api/grupplats/update`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idGrup, nomGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}

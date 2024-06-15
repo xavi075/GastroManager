@@ -3,40 +3,61 @@ import { useRouter } from 'next/router';
 import Layout from '@/components/Layout/Layout';
 import { Input, Button } from "@/utils/components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faFloppyDisk, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faFloppyDisk, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { IGrupPlats } from "@/utils/interfaces";
-import { addGrupPlats, getGrupPlats, getGrupsPlats } from "@/utils/api";
+import { addGrupPlats, getGrupPlats, getGrupsPlats, updateGrupPlats, updatePlat } from "@/utils/api";
 
 
 export default function editaGrupPlats (){
     const router = useRouter();
-    const idGrup: string = router.asPath.split('=')[1];
+    // const idGrup: string = router.asPath.split('=')[1];
 
-    console.log("Grup", idGrup);
 
-    // TODO: Crear estats escalables
-    // Aquests estats han sigut creats per dissenyar una petita interacció, però només són de mostra
+    const [idGrup, setIdGrup] = useState<string | undefined>(undefined);
+
+
+
     const [name, setName] = useState('');
     const [selectedPlat, setSelectedPlat] = useState<number | null>(null); // Estat per al plat seleccionat
-    const [platName, setPlatName] = useState('Patates Braves');
-    const [platPreu, setPlatPreu] = useState<number>(5.5);
+    const [platName, setPlatName] = useState('');
+    const [platPreu, setPlatPreu] = useState<number>(0);
+    const [refresh, setRefresh] = useState<boolean>(false);
 
     const [grupsPlats, setGrupsPlats] = useState<IGrupPlats>();
     
+    useEffect(() => {
+    if (router.isReady) {
+      const idGrupFromUrl = router.asPath.split('=')[1];
+      setIdGrup(idGrupFromUrl);
+    }
+  }, [router.isReady]);
         
     useEffect(() => {
         // TODO: agadar el id del grup des de la url
         // Coger idGrup desde la url
-        getGrupPlats(1, idGrup)
-        .then(response => {
-            console.log(response);
-            setGrupsPlats(response);
-        })
-        .catch((error) => {
-            console.error('Error when get grupsplats: ', error);
-        });
-    }, [])
+        if (idGrup !== undefined) {
+            getGrupPlats(1, idGrup)
+            .then(response => {
+                console.log(response);
+                setGrupsPlats(response);
+                setName(response.nomGrup);
+
+            })
+            .catch((error) => {
+                console.error('Error when get grupsplats: ', error);
+            });
+        }   
+    }, [idGrup, refresh]);
+
+    useEffect(() => {
+        if (grupsPlats && selectedPlat !== null){
+            if (grupsPlats.plat[selectedPlat]) {
+                setPlatName(grupsPlats.plat[selectedPlat].nom);
+                setPlatPreu(grupsPlats.plat[selectedPlat].preu);
+            }
+        }
+    }, [grupsPlats, selectedPlat]);
 
     // TODO: This must work for multiple plates
     const handlePlatNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,18 +79,37 @@ export default function editaGrupPlats (){
             addGrupPlats(1, name)
             .then(response => {
                 console.log(response);
+
                 router.push(`/editaGrupPlats?id=${response.id}`);
             })
             .catch((error) => {
                 console.error('Error when get grupsplats: ', error);
             });
         } else {
+            if (grupsPlats == undefined) return;
             console.log('Editant grup');
-            // updateGrupPlats(name);
+            updateGrupPlats(grupsPlats?.id, name)
+            .then(response => {
+                console.log(response);
+                setRefresh(!refresh);
+            })
+            .catch((error) => {
+                console.error('Error when update plats: ', error);
+            });
         }
     };
 
-    const handleSavePlat = (selectedPlat: number) => {
+    const handleSavePlat = (idPlat: number, nom:string, preu: number, idGrup:number) => {
+        updatePlat(1, idPlat, nom, preu, idGrup)
+        .then(response => {
+            console.log(response);
+            setRefresh(!refresh);
+            // setGrupsPlats(response);
+        })
+        .catch((error) => {
+            console.error('Error when update plats: ', error);
+        });
+        console.log(nom, preu, idGrup)
     };
 
     const handleDeletePlat = (platId: number) => {
@@ -82,8 +122,14 @@ export default function editaGrupPlats (){
   return (
     <Layout>
             <div className="justify-items-right">
-                {idGrup == undefined && (<h2 className="text-2xl font-bold m-2 text-center p-2">Crea un nou grup</h2>)}
-                {idGrup && (<h2 className="text-2xl font-bold m-2 text-center p-2">Edició del grup {grupsPlats?.nomGrup}</h2>)}
+            {idGrup === undefined && (
+        <h1 className="text-2xl font-bold m-2 text-center p-2">Crea un nou grup</h1>
+      )}
+      {idGrup && (
+        <h1 className="text-2xl font-bold m-2 text-center p-2">
+          Edició del grup {grupsPlats?.nomGrup}
+        </h1>
+      )}
                 {/* <h1 className="text-2xl font-bold m-2 text-center p-2">Edició del grup {grupsPlats?.nomGrup}</h1> */}
                 <form className="justify-items-center w-full" onSubmit={handleSubmit}>
                     <section className="bg-bronze-200 rounded-md m-2 p-2">
@@ -101,7 +147,7 @@ export default function editaGrupPlats (){
 
                 <section>
                     <h2 className="text-2xl font-bold text-center text-gray-800 mb-4 pt-2">Llista de plats</h2>
-                    <div className="mb-4">
+                    <div className="mb-4 mx-8">
                         <label htmlFor="platSelect" className="block text-lg font-medium text-gray-700">Selecciona un plat</label>
                         <select
                             id="platSelect"
@@ -117,19 +163,19 @@ export default function editaGrupPlats (){
                             ))}
                         </select>
                     </div>
-
-                    {selectedPlat !== null && grupsPlats && (
-                        <article className="bg-bronze-200 rounded-md m-2 grid grid-cols-2 justify-items-center gap-2 p-2">
+{/* La comparacio amb undefined ha danar a dalt perque inclogui el select */}
+                    {selectedPlat !== null && grupsPlats && idGrup !== undefined &&(
+                        <article className="bg-bronze-200 rounded-md m-2 mx-8 grid grid-cols-2 justify-items-center gap-2 p-2">
                             <h3 className="col-span-2 font-semibold">{grupsPlats.plat[selectedPlat].nom}</h3>
                             <Input
                                 label="Nom del plat"
-                                // value={grupsPlats.plat[selectedPlat].nom}
+                                value={platName}
                                 onChange={handlePlatNameChange}
                             />
                             <Input
                                 type="number"
                                 label="Preu"
-                                value={grupsPlats.plat[selectedPlat].preu.toString()}
+                                value={platPreu.toString()}
                                 min={0}
                                 step={0.01}
                                 onChange={handlePlatPreuChange}
@@ -142,8 +188,37 @@ export default function editaGrupPlats (){
                             <button onClick={() => handleDeletePlat(grupsPlats.plat[selectedPlat].id)} className="col-span-2 bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded m-2 ml-2">
                                 Elimina'l <FontAwesomeIcon icon={faTrash} />
                             </button>
-                            <button onClick={() => handleSavePlat(selectedPlat)} className="col-span-2 bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded m-2 ml-2">
+                            <button onClick={() => handleSavePlat(grupsPlats.plat[selectedPlat].id, platName, platPreu, grupsPlats.id)} className="col-span-2 bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded m-2 ml-2">
                                 Desa'l <FontAwesomeIcon icon={faFloppyDisk} />
+                            </button>
+                        </article>
+                    )}
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-bold text-center text-gray-800 mb-4 pt-2">Afegir un nou plat</h2>
+                    {idGrup !== undefined &&(
+                        <article className="bg-bronze-200 rounded-md m-2 mx-8 grid grid-cols-2 justify-items-center gap-2 p-2">
+                            <Input
+                                label="Nom del plat"
+                                // value={platName}
+                                // onChange={handlePlatNameChange}
+                            />
+                            <Input
+                                type="number"
+                                label="Preu"
+                                // value={platPreu.toString()}
+                                min={0}
+                                step={0.01}
+                                // onChange={handlePlatPreuChange}
+                                endContent={
+                                    <div className="flex items-center">
+                                        <span className="text-default-400 text-small">€</span>
+                                    </div>
+                                }
+                            />
+                            <button className="col-span-2 bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded m-2 ml-2">
+                                Afegeix <FontAwesomeIcon icon={faPlus} />
                             </button>
                         </article>
                     )}
