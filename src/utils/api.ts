@@ -16,6 +16,20 @@ export function getTaules (idRestaurant: string): Promise<ITaula[]> {
     })
 }
 
+export function getTaula (idTaula: string): Promise<ITaula> {
+    return fetch(`/api/taules/get?idTaula=${idTaula}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get taula is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
 export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula> {
     return fetch(`/api/taules/add`, {
         method: 'POST',

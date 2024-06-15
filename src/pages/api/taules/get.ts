@@ -11,7 +11,16 @@ export default async function handler(
     if (req.method === "GET") {
         try {
             const { idRestaurant } = req.query;
-            if (idRestaurant) {
+            const { idTaula } = req.query;
+            if (idTaula){
+                const taula = await prisma.taula.findMany({
+                    where: {
+                        id: Number(idTaula),
+                    },
+                });
+                res.status(200).json(taula);
+                return;
+            } else if (idRestaurant) {
                 const taulesRestaurant = await prisma.taula.findMany({
                     where: {
                         idRestaurant: Number(idRestaurant),
