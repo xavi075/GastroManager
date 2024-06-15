@@ -1,5 +1,5 @@
 
-import { IComanda, ILiniaComanda, ILiniaMenu, ITaula, IGrupPlats, IMenu } from "./interfaces";
+import { IComanda, ILiniaComanda, ILiniaMenu, ITaula, IGrupPlats, IMenu, IPlat } from "./interfaces";
 
 
 export function getTaules (idRestaurant: string): Promise<ITaula[]> {
@@ -161,6 +161,21 @@ export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
     })
   }
 
+  export function getGrupPlats(idRestaurant: number, idGrup: string): Promise<IGrupPlats> {
+    let url = `/api/grupplats/get?idRestaurant=${idRestaurant}&idGrup=${idGrup}`;
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get grup plats is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
   export function updateComanda(id: number): Promise<IComanda> {
     return fetch(`/api/comanda/update?id=${id}`, {
         method: 'PUT',
@@ -197,6 +212,49 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
             "Content-type": "application/json"
         },
         body: JSON.stringify({})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
+  export function getPlatsGrup(idGrup: number): Promise<IPlat[]> {
+    return fetch(`/api/plats/get?idGrup=${idGrup}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get plats grup is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
+  export function getPlat(idPlat: number): Promise<IPlat> {
+    return fetch(`/api/plats/get?idPlat=${idPlat}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get plat is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
+  export function addLiniaComanda(idComanda: number, idPlat: number, quantitat: number): Promise<ILiniaComanda> {
+    return fetch(`/api/liniesComanda/add`, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idComanda, idPlat, quantitat})
     }).then(res => {
         if (!res.ok) throw new Error('Response is not OK')
         return res.json()

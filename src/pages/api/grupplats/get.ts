@@ -9,7 +9,23 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     if (req.method === "GET") {
         try {
             const { idRestaurant } = req.query;
-            if (idRestaurant) {
+            const { idGrup } = req.query;
+            console.log("Id Restaurant", idRestaurant, " idGrup", idGrup)
+            if (idRestaurant && idGrup != undefined && idGrup != null) {
+                console.log("Obtenir un sol grup")
+                const grupPlat = await prisma.grupPlat.findMany({
+                    where: {
+                        // idRestaurant: Number(idRestaurant),
+                        id: Number(idGrup),
+                    },
+                    include: {
+                        plat: true,
+                    },
+                });
+                res.status(200).json(grupPlat);
+                return;
+            } else if (idRestaurant) {
+                console.log("Obtenir tots els grups")
                 const grupsPlats = await prisma.grupPlat.findMany({
                     where: {
                         idRestaurant: Number(idRestaurant),
@@ -20,7 +36,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
                 });
                 res.status(200).json(grupsPlats);
                 return;
-            } 
+            } else {
+                res.status(405).json({ error: "Method not allowed" });
+            }
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }
