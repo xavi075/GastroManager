@@ -3,10 +3,11 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { USERDROPDOWN_LINKS } from "../../../../lib/constants/navigation";
 import { useRouter } from "next/router";
+import { useSession, signOut } from "next-auth/react";
 
 export const UserDropDown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,7 @@ export const UserDropDown = () => {
 
   const router = useRouter(); // Obtenir l'objecte router de Next.js
   const { pathname } = router; // Obtenir la ruta actual
+  const { data: session } = useSession(); // Obtenir la sessió de l'usuari
 
   return (
     <Menu as="div" className="relative inline-block">
@@ -29,7 +31,7 @@ export const UserDropDown = () => {
           }`}
         onClick={toggleMenu}
       >
-        <span>John</span>
+        <span>{session?.user.name.split(' ')[0]}</span>
         <FontAwesomeIcon
           icon={faChevronRight}
           className={`hi-mini hi-chevron-down inline-block size-5 transform transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`}
@@ -52,6 +54,20 @@ export const UserDropDown = () => {
             {USERDROPDOWN_LINKS.map((item) => (
               <UserDropDownLink {...item} />
             ))}
+          </div>
+          <div className="divide-y divide-gray-100 rounded-lg bg-white ring-1 ring-black ring-opacity-5">
+            <Menu.Item>
+              <button
+                onClick={() => signOut()}
+                className="group flex items-center space-x-2 rounded-lg border px-3 py-2 text-m font-medium border-transparent text-bronze-900 hover:bg-bronze-100 hover:text-bronze-950 active:border-bronze-100"
+              >
+                <FontAwesomeIcon
+                  icon={faRightFromBracket}
+                  className="hi-mini hi-logout inline-block size-5 opacity-25 group-hover:opacity-100 text-bronze-800"
+                />
+                <span className="grow">Tanca sessió</span>
+              </button>
+            </Menu.Item>
           </div>
         </Menu.Items>
       </Transition>

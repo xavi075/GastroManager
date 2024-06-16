@@ -6,18 +6,30 @@ import { faEye, faEyeSlash, faFloppyDisk, faCircleExclamation } from "@fortaweso
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDisclosure } from '@nextui-org/react';
 import { error } from 'console';
+import { useSession } from "next-auth/react";
 
 export default function Profile() {
 
     // guarda les dades de l'usuari
     const [usuari, setUsuari] = useState<IUsuari>();
-
-    // realitza una peticio a la API per obtenir les dades de l'usuari el primer cop que es carrega el component
+    const { data: session } = useSession(); // Obtenir la sessió de l'usuari
     useEffect(() => {
-        fetch("/api/usuaris/get?id=1")
-            .then((res) => res.json())
-            .then((data) => setUsuari(data));
-    }, []);
+        if (session) {
+            fetch("/api/usuaris/get?email=" + session.user.email)
+                .then((res) => res.json())
+                .then((data) => setUsuari(data));
+        }
+    }, [session]);
+
+    //realitza una peticio a la API per obtenir les dades de l'usuari el primer cop que es carrega el component
+    // useEffect(() => {
+    //     console.log(session);
+    //     fetch("/api/usuaris/get?id=4")
+    //         .then((res) => res.json())
+    //         .then((data) => setUsuari(data));
+    // }, []);
+
+    
 
 
     // guarda les dades del formulari

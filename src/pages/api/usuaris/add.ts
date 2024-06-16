@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { options } from "../../../lib/auth";
 const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
@@ -8,6 +10,13 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    const session = await getServerSession(req, res, options)
+
+    if (!session) {
+        res.status(401).json({ error: "Unauthorized" });
+        return;
+    }
+
     if (req.method === "POST") {
         try {
             const { email, nom, contrasenya, nomRol, nifRestaurant } = req.body;

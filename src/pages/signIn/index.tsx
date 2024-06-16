@@ -6,7 +6,7 @@ import 'tailwindcss/tailwind.css'
 import { Footer } from "@/components/Layout/Footer";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import Image from 'next/image';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from "next/router";
 
 const SignIn = () => {

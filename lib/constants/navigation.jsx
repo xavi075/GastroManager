@@ -42,10 +42,10 @@ export const USERDROPDOWN_LINKS = [
     path: "/profile",
     icon: faUser,
   },
-  {
-    key: "logOut",
-    label: "Sortir",
-    path: "#", // a determinar
-    icon: faRightFromBracket,
-  },
+  // {
+  //   key: "logOut",
+  //   label: "Sortir",
+  //   path: "/api/auth/signout", // a determinar
+  //   icon: faRightFromBracket,
+  // },
 ];
