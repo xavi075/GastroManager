@@ -175,7 +175,7 @@ export default function editaGrupPlats (){
                 </form>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-center text-gray-800 mb-4 pt-2">Llista de plats</h2>
+                    <h2 className="text-2xl font-bold text-center text-gray-800 mb-4 pt-2">Modifica un plat</h2>
                     <div className="mb-4 mx-8">
                         <label htmlFor="platSelect" className="block text-lg font-medium text-gray-700">Selecciona un plat</label>
                         <select

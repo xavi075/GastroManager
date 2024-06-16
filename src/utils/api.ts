@@ -1,4 +1,6 @@
+import exp from "constants";
 import { IComanda, ILiniaComanda, ILiniaMenu, ITaula, IGrupPlats, IMenu, IUsuari } from "./interfaces";
+import e from "express";
 
 export function getTaules (idRestaurant: string): Promise<ITaula[]> {
     return fetch(`/api/taules/get?idRestaurant=${idRestaurant}`, {
@@ -297,6 +299,50 @@ export function updateGrupPlats(idGrup: number, nomGrup: string): Promise<IGrupP
             "Content-type": "application/json"
         },
         body: JSON.stringify({idGrup, nomGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getMenu(idRestaurant: number, idMenu: string): Promise<IMenu> {
+    return fetch(`/api/menus/get?idRestaurant=${idRestaurant}&idMenu=${idMenu}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get menu is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function addMenu(idRestaurant: number, nomMenu: string, preu: number, primers: number, segons: number, postres: number): Promise<IMenu> {
+    return fetch(`/api/menus/add`, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idRestaurant, nomMenu, preu, primers, segons, postres})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function updateMenu(idMenu: number, nomMenu: string, preu: number, primers: number, segons: number, postres: number): Promise<IMenu> {
+    return fetch(`/api/menus/update`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idMenu, nomMenu, preu, primers, segons, postres})
     }).then(res => {
         if (!res.ok) throw new Error('Response is not OK')
       return res.json()

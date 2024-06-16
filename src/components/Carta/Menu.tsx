@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { getMenus } from '@/utils/api';
 import { IMenu } from '@/utils/interfaces';
+import Link from 'next/link';
 
 
 
@@ -49,7 +50,7 @@ export const Menu = () => {
                     <div className='px-0'>
                         <h4 className="text-lg font-bold mb-2">Primer Plat</h4>
                         <ul className='m-4 p-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.grupPlat_menu_idGrupPrimerPlatTogrupPlat.plat.map((primer) =>(
+                            {menu.grupPlat_menu_idGrupPrimerPlatTogrupPlat?.plat.map((primer) =>(
                                 <li>{primer.nom}</li>
                             ))}
                         </ul>
@@ -57,7 +58,7 @@ export const Menu = () => {
                     <div>
                         <h4 className="text-lg font-bold mb-2">Segon Plat</h4>
                         <ul className='m-4 py-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.grupPlat_menu_idGrupSegonPlatTogrupPlat.plat.map((segon) =>(
+                            {menu.grupPlat_menu_idGrupSegonPlatTogrupPlat?.plat.map((segon) =>(
                                 <li>{segon.nom}</li>
                             ))}
                         </ul>
@@ -65,7 +66,7 @@ export const Menu = () => {
                     <div>
                         <h4 className="text-lg font-bold mb-2">Postre</h4>
                         <ul className='m-4 py-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.grupPlat_menu_idGrupPostresTogrupPlat.plat.map((postre) =>(
+                            {menu.grupPlat_menu_idGrupPostresTogrupPlat?.plat.map((postre) =>(
                                 <li>{postre.nom}</li>
                             ))}
                         </ul>
@@ -74,13 +75,15 @@ export const Menu = () => {
                         <h4 className="text-lg font-bold">Preu:</h4>
                         <p className="text-xl font-bold">{menu.preu}€</p>
                     </div>
-                    <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
-                        Edita <FontAwesomeIcon icon={faPencil}/>
-                    </button>
+                    <Link href={`/editaMenu?idMenu=${menu.id}`}>
+                        <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2">
+                            Edita <FontAwesomeIcon icon={faPencil}/>
+                        </button>
+                    </Link>
                 </article>                    
                 ))}
             </div>
-            <a href="" className="block bg-bronze-500 hover:bg-bronze-700 text-white font-bold py-2 px-4 rounded mx-auto text-center">
+            <a href="/editaMenu" className="block bg-bronze-500 hover:bg-bronze-700 text-white font-bold py-2 px-4 rounded mx-auto text-center">
                 Afegir un nou menú <FontAwesomeIcon icon={faFolderPlus}/>
             </a>
         </section>
