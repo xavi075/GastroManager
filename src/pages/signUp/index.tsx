@@ -218,7 +218,6 @@ const SignUp = () => {
                             <Input
                                 type="email"
                                 label="Correu Electrònic"
-                                isRequired
                                 value={email}
                                 onChange={handleEmailChange}
                             />
