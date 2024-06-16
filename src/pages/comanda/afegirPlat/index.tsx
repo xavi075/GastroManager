@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout/Layout';
-import { Input, Button } from "@/utils/components";
+import { Input } from "@/utils/components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { IGrupPlats, IPlat, ITaula } from "@/utils/interfaces";
-import { getComanda, getGrupPlats, getGrupsPlats, getPlatsGrup, getTaula, addLiniaComanda } from "@/utils/api";
+import { getGrupsPlats, getPlatsGrup, getTaula, addLiniaComanda } from "@/utils/api";
 
 
 export default function afegirPlat (){
@@ -14,20 +14,14 @@ export default function afegirPlat (){
     const [idComanda, setIdComanda] = useState<string | undefined>(undefined);
     const [idTaula, setIdTaula] = useState<string | undefined>(undefined);
 
-    // const idGrup: string = "1";
-
     console.log("Taula", idTaula);
     console.log("Comanda", idComanda);
 
-    // const [name, setName] = useState('');
     const [selectedGrup, setSelectedGrup] = useState<number | null>(null); // Estat per al grup seleccionat
     const [selectedPlat, setSelectedPlat] = useState<number | null>(null); // Estat per al plat seleccionat
-    // const [platName, setPlatName] = useState('Patates Braves');
-    // const [platPreu, setPlatPreu] = useState<number>(5.5);
 
     const [taula, setTaula] = useState<ITaula>();
     const [grupsPlats, setGrupsPlats] = useState<IGrupPlats[]>([]);
-    // const [grupPlats, setGrupPlats] = useState<IGrupPlats>();
     const [platsGrup, setPlatsGrup] = useState<IPlat[]>([]);
     const [platQuantitat, setPlatQuantitat] = useState<number>(1);
 
@@ -39,19 +33,6 @@ export default function afegirPlat (){
         }
       }, [router.isReady, router.query]);
     
-    //   useEffect(() => {
-    //     if(Number(idComanda)){
-    //         getComanda(Number(idRestaurant))
-    //         .then(response => {
-    //             console.log(response);
-    //             setGrupsPlats(response);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error when get grupsplats: ', error);
-    //         });
-    //     }
-    // }, [idComanda])
-        
     useEffect(() => {
         if(Number(idTaula)){
             getTaula(String(idTaula))

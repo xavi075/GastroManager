@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout/Layout';
-import { Input, Button } from "@/utils/components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { IGrupPlats, IMenu, IPlat, ITaula } from "@/utils/interfaces";
+import { IMenu, IPlat, ITaula } from "@/utils/interfaces";
 import { getMenusRestaurant, getMenu, getPlatsGrup, getTaula, addLiniaMenu } from "@/utils/api";
 
 
@@ -14,18 +13,13 @@ export default function afegirMenu (){
     const [idComanda, setIdComanda] = useState<string | undefined>(undefined);
     const [idTaula, setIdTaula] = useState<string | undefined>(undefined);
 
-    // const idGrup: string = "1";
-
     console.log("Taula", idTaula);
     console.log("Comanda", idComanda);
 
-    // const [name, setName] = useState('');
     const [selectedMenu, setselectedMenu] = useState<number | null>(null); // Estat per al menu seleccionat
     const [selectedPrimerPlat, setselectedPrimerPlat] = useState<number | null>(null); // Estat per al 1r plat seleccionat
     const [selectedSegonPlat, setselectedSegonPlat] = useState<number | null>(null); // Estat per al 2n plat seleccionat
     const [selectedPostres, setselectedPostres] = useState<number | null>(null); // Estat per a les postres seleccionades
-    // const [platName, setPlatName] = useState('Patates Braves');
-    // const [platPreu, setPlatPreu] = useState<number>(5.5);
 
     const [taula, setTaula] = useState<ITaula>();
     const [menus, setMenus] = useState<IMenu[]>([]);
@@ -33,9 +27,6 @@ export default function afegirMenu (){
     const [primersPlats, setPrimersPlats] = useState<IPlat[]>([]);
     const [segonsPlats, setSegonsPlats] = useState<IPlat[]>([]);
     const [postres, setPostres] = useState<IPlat[]>([]);
-    // const [grupPlats, setGrupPlats] = useState<IGrupPlats>();
-    const [platsGrup, setPlatsGrup] = useState<IPlat[]>([]);
-    const [platQuantitat, setPlatQuantitat] = useState<number>(1);
 
     useEffect(() => {
         if (router.isReady) {
@@ -270,7 +261,6 @@ export default function afegirMenu (){
                         </button>
                     </Link> 
                 </div>
-                
             </div>
         </Layout>
     );
