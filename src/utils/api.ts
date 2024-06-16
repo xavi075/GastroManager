@@ -262,3 +262,46 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
         return res 
     })
   }
+
+  export function getMenusRestaurant(idRestaurant: number): Promise<IMenu[]> {
+    return fetch(`/api/menus/get?idRestaurant=${idRestaurant}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get menus restaurant is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
+  export function getMenu(idMenu: number): Promise<IMenu> {
+    return fetch(`/api/menus/get?idMenu=${idMenu}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get menu is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
+  export function addLiniaMenu(idComanda: number, idMenu: number, idPrimerPlat: number, idSegonPlat: number, idPostres: number): Promise<ILiniaComanda> {
+    return fetch(`/api/liniesMenu/add`, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idComanda, idMenu, idPrimerPlat, idSegonPlat, idPostres})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }

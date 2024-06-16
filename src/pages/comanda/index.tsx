@@ -153,7 +153,7 @@ const comandaActual: React.FC = () => {
                   Afegir plat <FontAwesomeIcon icon={faPlus} />
                 </button>
             </Link>
-            <Link href={`/comanda?idComanda=${taula?.id}/afegirMenu`} key={taula?.id}>
+            <Link href={`/comanda/afegirMenu?idComanda=${comanda[0].id}&idTaula=${taula?.id}`} key={comanda[0]?.id}>
                 <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
                   Afegir menú <FontAwesomeIcon icon={faPlus} />
                 </button>

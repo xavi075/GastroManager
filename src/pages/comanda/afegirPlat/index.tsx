@@ -191,7 +191,8 @@ export default function afegirPlat (){
 
                 </section>
                 <div className="m-5 flex justify-center">
-                    <button onClick={() => afegirLiniaComanda(Number(idComanda), Number(selectedPlat), Number(platQuantitat))} className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2">
+                    <button onClick={() => afegirLiniaComanda(Number(idComanda), Number(selectedPlat), Number(platQuantitat))} className={`bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2 
+                    ${!selectedPlat ? 'opacity-50 cursor-not-allowed' : '' }`} disabled={!selectedPlat}>
                         Afegeix plat <FontAwesomeIcon icon={faPlus} />
                     </button>
                     <Link href={`/comanda?idTaula=${idTaula}`} key={idTaula}>
