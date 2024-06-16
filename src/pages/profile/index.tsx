@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout/Layout';
 import { IUsuari } from "@/utils/interfaces";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Input, Modal, ModalContent, ModalHeader, ModalBody } from "@/utils/components";
 import { faEye, faEyeSlash, faFloppyDisk, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

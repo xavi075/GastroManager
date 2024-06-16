@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
@@ -10,19 +10,44 @@ export default async function handler(
 ) {
     if (req.method === "POST") {
         try {
-            const { email, nom, contrasenya, dataCreacioUsuari, idRol} = req.body;
-            const contrasenya_hash = await bcrypt.hash(contrasenya, 10);
+            const { email, nom, contrasenya, nomRol, nifRestaurant } = req.body;
 
-            const nuevoUsuario = await prisma.usuari.create({
+            // comprova si l'email ja existeix
+            const existingEmail = await prisma.usuari.findUnique({
+                where: {email: email}
+            });
+            if (existingEmail) {
+                return res.status(409).json({ error: "Email already exists" })
+            }
+
+            const hashedPassword = await bcrypt.hash(contrasenya, 10);
+
+            const newRol = await prisma.rol.findUnique({
+                where: { nomRol: nomRol }
+            });
+            if (!newRol) {
+                return res.status(404).json({ error: "Role not found" });
+            }
+
+            const newRestaurant = await prisma.restaurant.findUnique({
+                where: { nif: nifRestaurant }
+            });
+            if (!newRestaurant) {
+                return res.status(404).json({ error: "Restaurant not found" });
+            }
+
+            const newUser = await prisma.usuari.create({
                 data: {
-                    email,
-                    nom,
-                    contrasenya_hash,
-                    dataCreacioUsuari,
-                    idRol
+                    email: email,
+                    nom: nom,
+                    contrasenya_hash: hashedPassword,
+                    idRol: newRol.id,
+                    idRestaurant: newRestaurant.id
                 },
             });
-            res.status(200).json(nuevoUsuario);
+            const { contrasenya_hash: newUserPassword, ...rest } = newUser;
+
+            res.status(200).json(rest);
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }
