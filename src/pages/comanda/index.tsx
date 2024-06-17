@@ -207,6 +207,7 @@ const comandaActual: React.FC = () => {
             </article>
           </section>
 
+<<<<<<< HEAD
           <div className="mt-5 flex justify-center">
             <button onClick={() => pagarComanda(comanda[0].id)} className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
               Pagar <FontAwesomeIcon icon={faEuroSign}/>
@@ -235,6 +236,14 @@ const comandaActual: React.FC = () => {
             </div>
           </section>
         )}
+=======
+        <div className="mt-5 flex justify-center">
+          <button onClick={() => pagarComanda(comanda[0].id)} className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
+            Pagar <FontAwesomeIcon icon={faEuroSign}/>
+          </button>
+        </div>
+      </section>
+>>>>>>> main
     </Layout>
   );
 };

@@ -43,9 +43,9 @@ export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula
     }).then( res => {
         return res 
     })
-  }
+}
 
-  export function deleteTaula(idRestaurant: number, numTaula: number): Promise<ITaula> {
+export function deleteTaula(idRestaurant: number, numTaula: number): Promise<ITaula> {
     return fetch(`/api/taules/delete`, {
         method: 'DELETE',
         headers: {
@@ -58,9 +58,9 @@ export function addTaula(idRestaurant: number, numTaula: number): Promise<ITaula
     }).then( res => {
         return res 
     })
-  }
+}
 
-  export function getComanda (idTaula: string): Promise<IComanda> {
+export function getComanda (idTaula: string): Promise<IComanda> {
     return fetch(`/api/comanda/get?idTaula=${idTaula}`, {
         method: 'GET',
         headers: {
@@ -115,9 +115,9 @@ export function updateQtyLiniaComanda(id: number, novaQuantitat: number): Promis
     }).then( res => {
         return res 
     })
-  }
+}
   
-  export function deleteLiniaComanda(id: number): Promise<ILiniaComanda> {
+export function deleteLiniaComanda(id: number): Promise<ILiniaComanda> {
     return fetch(`/api/liniesComanda/delete`, {
         method: 'DELETE',
         headers: {
@@ -130,9 +130,9 @@ export function updateQtyLiniaComanda(id: number, novaQuantitat: number): Promis
     }).then( res => {
         return res 
     })
-  }
+}
 
-  export function deleteLiniaMenu(id: number): Promise<ILiniaMenu> {
+export function deleteLiniaMenu(id: number): Promise<ILiniaMenu> {
     return fetch(`/api/liniesMenu/delete`, {
         method: 'DELETE',
         headers: {
@@ -145,7 +145,7 @@ export function updateQtyLiniaComanda(id: number, novaQuantitat: number): Promis
     }).then( res => {
         return res 
     })
-  }
+}
 
 export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
     return fetch(`/api/grupplats/get?idRestaurant=${idRestaurant}`, {
@@ -159,7 +159,7 @@ export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
     }).then( res => {
         return res 
     })
-  }
+}
 
   export function getGrupPlats(idRestaurant: number, idGrup: string): Promise<IGrupPlats> {
     let url = `/api/grupplats/get?idRestaurant=${idRestaurant}&idGrup=${idGrup}`;
