@@ -1,6 +1,9 @@
 // pages/api/usuaris/updatePassword.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { options } from "../../../lib/auth";
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
@@ -8,6 +11,13 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    const session = await getServerSession(req, res, options)
+
+    if (!session) {
+        res.status(401).json({ error: "Unauthorized" });
+        return;
+    }
+
     if (req.method == "PUT") {
         try {
             const { email, currentPwd, newPwd } = req.body;
@@ -18,13 +28,15 @@ export default async function handler(
                     },
                 });
                 if (usuari) {
-                    if (usuari.contrasenya_hash == currentPwd) {
+                    // if (usuari.contrasenya_hash == currentPwd) {
+                    if (await bcrypt.compare(currentPwd, usuari.contrasenya_hash)) {   
+                        const hashedPassword = await bcrypt.hash(newPwd, 10);
                         await prisma.usuari.update({
                             where: {
                                 email: email,
                             },
                             data: {
-                                contrasenya_hash: newPwd,
+                                contrasenya_hash: hashedPassword,
                             },
                         });
                         res.status(200).json({ message: "Password Updated" });
