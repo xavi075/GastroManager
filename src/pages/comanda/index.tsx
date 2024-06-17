@@ -97,7 +97,7 @@ const comandaActual: React.FC = () => {
   }, [idTaula])
 
   useEffect(() => {
-    if(idTaula && taulaCarregada){
+    if(idTaula && (taulaCarregada || liniesModificades || novaComanda)){
       getComanda(String(idTaula))
       .then(response => {
         setComanda(response)
@@ -186,9 +186,10 @@ const comandaActual: React.FC = () => {
             })}
 
             {liniesMenu && liniesMenu.map((liniaMenu, index) => {
+              console.log(liniaMenu)
               return (
                 <article key={liniaMenu.id} className="grid grid-cols-1 md:grid-cols-6 mb-2 m-1 p-1 bg-vanilla-800 shadow-md rounded-md">
-                <article className="p-2 text-center col-span-1 md:col-span-3 break-all">{liniaMenu.menu.nom}</article>
+                <article className="p-2 text-center col-span-1 md:col-span-3 break-all">{liniaMenu.menu.nom} <br /> {liniaMenu.plat_liniaMenu_idPrimerPlatToplat.nom} - {liniaMenu.plat_liniaMenu_idSegonPlatToplat.nom} - {liniaMenu.plat_liniaMenu_idPostresToplat.nom}</article>
                 <article className="p-2 text-center col-span-1">1</article>
                 <article className="p-2 text-center col-span-1">{liniaMenu.menu.preu}€</article>
                 <article className="p-2 text-center col-span-1">

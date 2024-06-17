@@ -90,7 +90,7 @@ export default function afegirMenu (){
     }, [menu])
 
     useEffect(() => {
-        if(selectedPrimerPlat) {
+        if(menu) {
             console.log("Id Segons plats", menu[0].idGrupSegonPlat)
             getPlatsGrup(Number(menu[0].idGrupSegonPlat))
             .then(response => {
@@ -101,10 +101,10 @@ export default function afegirMenu (){
                 console.error('Error when get segons plat: ', error);
             });
         }
-    }, [selectedPrimerPlat])
+    }, [menu])
 
     useEffect(() => {
-        if(selectedSegonPlat) {
+        if(menu) {
             console.log("Id postres", menu[0].idGrupPostres)
             getPlatsGrup(Number(menu[0].idGrupPostres))
             .then(response => {
@@ -115,7 +115,7 @@ export default function afegirMenu (){
                 console.error('Error when get postres: ', error);
             });
         }
-    }, [selectedSegonPlat]) 
+    }, [menu]) 
 
     const handleMenuSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setselectedMenu(parseInt(e.target.value));
@@ -127,13 +127,10 @@ export default function afegirMenu (){
 
     const handlePrimerPlatSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setselectedPrimerPlat(parseInt(e.target.value));
-        setselectedSegonPlat(null);
-        setselectedPostres(null);
     };
 
     const handleSegonPlatSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setselectedSegonPlat(parseInt(e.target.value));
-        setselectedPostres(null);
     };
 
     const handlePostresSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -204,7 +201,7 @@ export default function afegirMenu (){
                         </article>
                     )}
 
-                    {selectedPrimerPlat !== null && segonsPlats && (
+                    {selectedMenu !== null && segonsPlats && (
                         <article className="bg-bronze-200 rounded-md m-2 justify-items-center p-1">
                         <h2 className="text-2xl font-bold text-center text-gray-800 mb-4 pt-2">Llista dels 2n plats del menu</h2>
                             <div className="mb-4">
@@ -226,7 +223,7 @@ export default function afegirMenu (){
                         </article>
                     )}
 
-                    {selectedSegonPlat !== null && postres && (
+                    {selectedMenu !== null && postres && (
                         <article className="bg-bronze-200 rounded-md m-2 justify-items-center p-1">
                         <h2 className="text-2xl font-bold text-center text-gray-800 mb-4 pt-2">Llista de les postres del menu</h2>
                             <div className="mb-4">
@@ -252,7 +249,7 @@ export default function afegirMenu (){
                 </section>
                 <div className="m-5 flex justify-center">
                     <button onClick={() => afegirLiniaMenu(Number(idComanda), Number(selectedMenu), Number(selectedPrimerPlat), Number(selectedSegonPlat), Number(selectedPostres))} className={`bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2 
-                    ${!selectedPostres ? 'opacity-50 cursor-not-allowed' : '' }`} disabled={!selectedPostres}>
+                    ${(!selectedPostres || !selectedSegonPlat || !selectedPrimerPlat) ? 'opacity-50 cursor-not-allowed' : '' }`} disabled={(!selectedPostres || !selectedSegonPlat || !selectedPrimerPlat)}>
                         Afegeix menú <FontAwesomeIcon icon={faPlus} />
                     </button>
                     <Link href={`/comanda?idTaula=${idTaula}`} key={idTaula}>
