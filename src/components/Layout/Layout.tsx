@@ -11,15 +11,13 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
-    <Providers>
-      <div className="App flex flex-col h-screen w-full">
-        <NavBar />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
-      </div>
-    </Providers>
+    <div className="App flex flex-col h-screen w-full">
+      <NavBar />
+      <main className="flex-grow">
+        {children}
+      </main>
+      <Footer />
+    </div>
   );
 };
 
