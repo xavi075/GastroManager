@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
-import Layout from '../components/Layout/Layout';
+import React, { useState, useEffect } from 'react';
+import Layout from '../../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router'; // Importem useRouter per gestionar la navegació
+import { IUsuari } from '@/utils/interfaces';
+import { getPersonal } from '@/utils/api';
+
 
 const Personal: React.FC = () => {
-  const [usuaris, setUsuaris] = useState<{ nom: string; cognom: string; rol: string; correu: string }[]>([
-    { nom: 'Ferran', cognom: 'Casanovas', rol: 'Cuiner', correu: 'ferran@gmail.com' },
-    { nom: 'Xavier', cognom: 'Massana', rol: 'Cuiner', correu: 'xavier@gmail.com' },
-    { nom: 'Arnau', cognom: 'Parcerisa', rol: 'Cambrer', correu: 'arnau@gmail.com' },
-    { nom: 'Queralt', cognom: 'del Águila', rol: 'Cambrer', correu: 'queralt@gmail.com' },
-  ]);
-
   const router = useRouter(); // Inicialitzem useRouter
+
+  const idRestaurant: number = 1;
+  const [usuaris, setUsuaris] = useState<IUsuari[]>([]);
 
   const afegirUsuari = () => {
     // Navegació cap a la nova pàgina d'afegir usuari quan es fa clic al botó
@@ -25,6 +24,18 @@ const Personal: React.FC = () => {
     setUsuaris(nousUsuaris);
   };
 
+  useEffect(() => {
+    if(idRestaurant) {
+      getPersonal(idRestaurant)
+      .then(response => {
+        setUsuaris(response)
+      })
+      .catch((error) => {
+        console.error('Error when get usuaris: ', error);
+      });
+    }
+  }, [idRestaurant])
+
   return (
     <Layout>
       <section className="flex flex-col w-70 max-w-screen-lg mx-auto p-8">
@@ -34,12 +45,12 @@ const Personal: React.FC = () => {
             <div key={index} className="border-1 border-solid border-black border-md rounded-lg bg-vanilla text-center transition-colors duration-200 ease-in-out relative">
               <div className="grid grid-cols-1">
                 <div className="p-3 overflow-hidden">
-                  <h2 className="text-xl font-bold text-center">{usuari.nom} {usuari.cognom}</h2>
+                  <h2 className="text-xl font-bold text-center">{usuari.nom}</h2>
                 </div>
                 <div className="p-3 overflow-hidden">
                   <div className="text-left">
-                    <p><strong>Rol:</strong> {usuari.rol}</p>
-                    <p><strong>Correu:</strong> {usuari.correu}</p>
+                    <p><strong>Rol:</strong> {usuari.rol.nomRol}</p>
+                    <p><strong>Email:</strong> {usuari.email}</p>
                   </div>
                 </div>
                 <div className="p-3 flex justify-center">

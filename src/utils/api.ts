@@ -1,5 +1,5 @@
 
-import { IComanda, ILiniaComanda, ILiniaMenu, ITaula, IGrupPlats, IMenu, IPlat } from "./interfaces";
+import { IUsuari, IComanda, ILiniaComanda, ILiniaMenu, ITaula, IGrupPlats, IMenu, IPlat } from "./interfaces";
 
 
 export function getTaules (idRestaurant: string): Promise<ITaula[]> {
@@ -10,6 +10,34 @@ export function getTaules (idRestaurant: string): Promise<ITaula[]> {
         },
     }).then(res => {
         if (!res.ok) throw new Error('Response of get taules is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getUsuaris(): Promise<IUsuari[]> {
+    return fetch(`/api/usuaris/get`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getPersonal(idRestaurant: number): Promise<IUsuari[]> {
+    return fetch(`/api/usuaris/get?idRestaurant=${idRestaurant}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
         return res.json()
     }).then( res => {
         return res 

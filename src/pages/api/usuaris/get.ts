@@ -12,6 +12,7 @@ export default async function handler(
     if (req.method == "GET") {
         try {
             const { id } = req.query;
+            const { idRestaurant } = req.query;
             if (id) {
                 const usuari = await prisma.usuari.findUnique({
                     where: {
@@ -28,6 +29,23 @@ export default async function handler(
                     },
                 });
                 res.status(200).json(usuari);
+                return;
+            } else if (idRestaurant) {
+                const usuaris = await prisma.usuari.findMany({
+                    where: {
+                        idRestaurant: Number(idRestaurant),
+                    },
+                    select: {
+                        id: true,
+                        email: true,
+                        nom: true,
+                        contrasenya_hash: false,
+                        dataCreacioUsuari: true,
+                        rol: true,
+                        restaurant: true,
+                    },
+                });
+                res.status(200).json(usuaris);
                 return;
             } else {
                 const usuaris = await prisma.usuari.findMany({
