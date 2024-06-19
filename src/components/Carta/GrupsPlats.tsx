@@ -57,7 +57,7 @@ export const GrupsPlats = ({ restaurant }: GrupsPlatsProps) => {
     return (
         <section>
             <h2 className='text-2xl font-bold m-2 text-center'>Carta de plats</h2>
-            {noGrup && <p className='text-center'>No hi ha grups de plats</p>}
+            {noGrup && <p className='text-center my-4'>No hi ha grups de plats</p>}
             {grupsPlats.map(( grup ) => (
                 // <article className={`${grup.color} rounded-md my-4 mx-auto text-center justify-center`}>
                 <article className={`bg-bronze-200 rounded-md my-4 mx-auto text-center justify-center`}>                    

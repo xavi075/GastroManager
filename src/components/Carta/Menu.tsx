@@ -53,7 +53,7 @@ export const Menu = ({ restaurant }: MenuProps) => {
     return (
         <section>
             <h2 className='text-2xl font-bold m-2 text-center '>Menús actuals</h2>
-            {noMenu && <p className='text-center'>No hi ha menús</p>}
+            {noMenu && <p className='text-center my-4'>No hi ha menús</p>}
             <div className='grid grid-cols-1 xl:grid-cols-2 gap-4 justify-items-center'>
                 {menus.map(( menu ) => (
                     <article className='bg-bronze-200 rounded-md my-4 text-center justify-center text-lg pb-4'>
