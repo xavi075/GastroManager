@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router'; // Importem useRouter per gestionar la navegació
 import { IUsuari } from '@/utils/interfaces';
-import { getPersonal } from '@/utils/api';
+import { getPersonal, deleteUsuari } from '@/utils/api';
 
 
 const Personal: React.FC = () => {
@@ -12,29 +12,33 @@ const Personal: React.FC = () => {
 
   const idRestaurant: number = 1;
   const [usuaris, setUsuaris] = useState<IUsuari[]>([]);
+  const [actualitzarUsuaris, setActualitzarUsuaris] = useState(false);
 
   const afegirUsuari = () => {
-    // Navegació cap a la nova pàgina d'afegir usuari quan es fa clic al botó
-    router.push('/AfegirUsuari');
+     router.push('/AfegirUsuari');
   };
 
-  const eliminarUsuari = (index: number) => {
-    const nousUsuaris = [...usuaris];
-    nousUsuaris.splice(index, 1);
-    setUsuaris(nousUsuaris);
-  };
+  const eliminarUsuari = (id: number) => {
+    console.log(id)
+    deleteUsuari(id)
+      .then(() => {
+        setActualitzarUsuaris(true)
+      })
+      .catch((error) => console.error('Error when delete usuari:', error));
+  }
 
   useEffect(() => {
-    if(idRestaurant) {
+    if(idRestaurant || actualitzarUsuaris) {
       getPersonal(idRestaurant)
       .then(response => {
         setUsuaris(response)
+        setActualitzarUsuaris(false)
       })
       .catch((error) => {
         console.error('Error when get usuaris: ', error);
       });
     }
-  }, [idRestaurant])
+  }, [idRestaurant, actualitzarUsuaris])
 
   return (
     <Layout>
@@ -53,11 +57,14 @@ const Personal: React.FC = () => {
                     <p><strong>Email:</strong> {usuari.email}</p>
                   </div>
                 </div>
-                <div className="p-3 flex justify-center">
-                  <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-1 px-2 rounded text-sm" onClick={() => eliminarUsuari(index)}>
+                {usuari.rol.nomRol != 'Administrador' && (
+                  <div className="p-3 flex justify-center">
+                  <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-1 px-2 rounded text-sm" onClick={() => eliminarUsuari(usuari.id)}>
                     Eliminar Usuari <FontAwesomeIcon icon={faMinus}/>
                   </button>
                 </div>
+                )}
+                
               </div>
             </div>
           ))}

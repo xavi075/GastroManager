@@ -1,28 +1,41 @@
 import React,  { useState, useEffect } from 'react';
+import { useSession } from "next-auth/react";
 import Layout from '../../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { response } from 'express';
 import { useUser } from '@nextui-org/react';
-import { getTaules, addTaula, deleteTaula } from "@/utils/api";
-import { ITaula } from '@/utils/interfaces';
+import { getTaules, addTaula, deleteTaula, getRestaurant } from "@/utils/api";
+import { IRestaurant, ITaula, IUsuari } from '@/utils/interfaces';
 import { error } from 'console';
 import { get } from 'http';
 
 const Taules: React.FC = () => {
+  const [restaurant, setRestaurant] = useState<IRestaurant>();
   const [taules, setTaules] = useState<ITaula[]>([]);
+  const [usuari, setUsuari] = useState<IUsuari>();
+  const { data: session } = useSession(); // Obtenir la sessió de l'usuari
 
   useEffect(() => {
-    getTaules("1")
-    .then(response => {
-      console.log(response) 
-        setTaules(response);
-    })
-    .catch((error) => {
-      console.error('Error when get taules: ', error);
-    });
-  }, [])
+    if (session) {
+      fetch("/api/usuaris/get?email=" + session.user.email)
+          .then((res) => res.json())
+          .then((data) => setUsuari(data));
+  }
+  }, [session])
+
+  useEffect(() => {
+    if (usuari) {
+      getTaules(String(usuari?.restaurant.id))
+      .then(response => {
+          setTaules(response);
+      })
+      .catch((error) => {
+        console.error('Error when get taules: ', error);
+      });
+    }
+  }, [usuari])
   
 
   //Event per afegir taules
