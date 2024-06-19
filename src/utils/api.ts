@@ -233,8 +233,7 @@ export function getGrupsPlatsCarta(idRestaurant: number): Promise<IGrupPlats[]> 
 }
 
 export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
-    let url = `/api/grupplats/get?idRestaurant=${idRestaurant}`;
-    return fetch(url, {
+    return fetch(`/api/grupplats/get?idRestaurant=${idRestaurant}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"
