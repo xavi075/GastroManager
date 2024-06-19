@@ -262,13 +262,13 @@ export function addGrupPlats(idRestaurant: number, nomGrup: string): Promise<IGr
     })
 }
 
-export function updatePlat(idRestaurant: number, idPlat: number, nomPlat: string, preu: number, idGrup: number): Promise<IGrupPlats> {
+export function updatePlat(idPlat: number, nomPlat: string, preu: number, idGrup: number): Promise<IGrupPlats> {
     return fetch(`/api/plats/update`, {
         method: 'PUT',
         headers: {
             "Content-type": "application/json"
         },
-        body: JSON.stringify({idRestaurant, idPlat, nomPlat, preu, idGrup})
+        body: JSON.stringify({idPlat, nomPlat, preu, idGrup})
     }).then(res => {
         if (!res.ok) throw new Error('Response is not OK')
       return res.json()
@@ -346,6 +346,65 @@ export function updateMenu(idMenu: number, nomMenu: string, preu: number, primer
     }).then(res => {
         if (!res.ok) throw new Error('Response is not OK')
       return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function deleteMenu(idMenu: number): Promise<IMenu> {
+    return fetch(`/api/menus/delete`, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idMenu})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function deleteGrupPlats(idGrup: number): Promise<IGrupPlats> {
+    return fetch(`/api/grupplats/delete`, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function deletePlat(idPlat: number): Promise<IGrupPlats> {
+    return fetch(`/api/plats/delete`, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idPlat})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getRestaurant(email: string): Promise<any> {
+    return fetch(`/api/restaurants/get?email=${email}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get restaurant is not OK')
+        return res.json()
     }).then( res => {
         return res 
     })

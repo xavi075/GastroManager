@@ -6,77 +6,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencil, faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import { get } from 'http';
 import { getGrupsPlats, getMenus } from '@/utils/api';
-import { IGrupPlats, IMenu } from '@/utils/interfaces';
+import { IGrupPlats, IMenu, IRestaurant } from '@/utils/interfaces';
 
-export const GrupsPlats = () => {
+interface GrupsPlatsProps {
+    restaurant?: IRestaurant;
+  }
 
-    // const LlistaPlats = [{
-    //     nom: "Patates Braves",
-    //     preu: 5.50
-    // }, 
-    // {
-    //     nom: "Olives",
-    //     preu: 1.50
-    // },
-    // {
-    //     nom: "Patates Xips",
-    //     preu: 2
-    // },
-    // {
-    //     nom: "Patates Xips petites",
-    //     preu: 1.60
-    // },
-    // {
-    //     nom: "Fruits Secs",
-    //     preu: 1.90
-    // },
-    // {
-    //     nom: "Escopinyes",
-    //     preu: 5.90
-    // }]
+export const GrupsPlats = ({ restaurant }: GrupsPlatsProps) => {
+  
 
-    // const LlistaBegudes = [{
-    //     nom: "Aigua (50 ml)",
-    //     preu: 1.90
-    // }, 
-    // {
-    //     nom: "Estrella Damm",
-    //     preu: 2.20
-    // },
-    // {
-    //     nom: "Coca-Cola",
-    //     preu: 2.50
-    // },
-    // {
-    //     nom: "Fanta de Taronja",
-    //     preu: 2.40
-    // }]
-
-    // const LlistaGrups = [{
-    //     nom: "Tapes",
-    //     color: "bg-bronze-200",
-    //     // TODO: Add new functionalities like icons
-    //     plats: LlistaPlats
-    // },
-    // {  
-    //     nom: "Begudes",
-    //     color: "bg-sky-200",
-    //     // TODO: Add new functionalities like icons
-    //     plats: LlistaBegudes
-    // }]
-
+    console.log("restaurant a grupplats", restaurant);
     const [grupsPlats, setGrupsPlats] = useState<IGrupPlats[]>([]);
 
     useEffect(() => {
-        getGrupsPlats(1)
-        .then(response => {
-            console.log(response);
-            setGrupsPlats(response);
-        })
-        .catch((error) => {
-            console.error('Error when get grupsplats: ', error);
-        });
-    }, [])
+        if (restaurant) {
+            // console.log("restaurant a useeffect", restaurant);
+            getGrupsPlats(restaurant.id)
+            .then(response => {
+                console.log(response);
+                setGrupsPlats(response);
+            })
+            .catch((error) => {
+                console.error('Error when get grupsplats: ', error);
+            });
+        }
+    }, [restaurant])
 
     return (
         <section>

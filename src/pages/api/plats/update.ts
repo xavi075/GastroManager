@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'PUT') {
-    const { idRestaurant, idPlat, nomPlat, preu, idGrup } = req.body;
+    const { idPlat, nomPlat, preu, idGrup } = req.body;
 
-    if (!idRestaurant || !idPlat || !nomPlat || preu === undefined || !idGrup) {
+    if (!idPlat || !nomPlat || preu === undefined || !idGrup) {
       res.status(400).json({ error: 'Todos los campos son requeridos' });
       return;
     }

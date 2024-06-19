@@ -5,15 +5,36 @@ import { Input, Button } from "@/utils/components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faFloppyDisk, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { IGrupPlats, IMenu } from "@/utils/interfaces";
-import { addGrupPlats, addMenu, addPlat, getGrupPlats, getGrupsPlats, getMenu, updateGrupPlats, updateMenu, updatePlat } from "@/utils/api";
+import { IGrupPlats, IMenu, IRestaurant } from "@/utils/interfaces";
+import { addGrupPlats, addMenu, addPlat, getGrupPlats, getGrupsPlats, getMenu, getRestaurant, updateGrupPlats, updateMenu, updatePlat } from "@/utils/api";
 import { get } from "http";
 import { Select, SelectItem, menu } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
 
 export default function editaMenu (){
     const router = useRouter();
     // const idGrup: string = router.asPath.split('=')[1];
+    const [restaurant, setRestaurant] = useState<IRestaurant>();
+    const { data: session } = useSession(); // Obtenir la sessió de l'usuari
+
+    useEffect(() => {
+        if (session && session.user.email) {
+
+            getRestaurant(session.user.email)
+            .then((response) => {
+                console.log(response);
+                setRestaurant(response);
+
+            })
+            .catch((error) => {
+                console.error('Error fetching restaurant:', error);
+            });
+        }
+    }, [session]);
+
+
+
 
 
     const [idMenu, setIdMenu] = useState<string | undefined>(undefined);
@@ -47,21 +68,23 @@ export default function editaMenu (){
     }, [router.isReady, router.asPath]);
 
     useEffect(() => {
-        getGrupsPlats(1)
-        .then(response => {
-            console.log(response);
-            setGrupsPlats(response);
-        })
-        .catch((error) => {
-            console.error('Error when get grupsplats: ', error);
-        });
-    }, []);
+        if (restaurant) {
+            getGrupsPlats(restaurant.id)
+            .then(response => {
+                console.log(response);
+                setGrupsPlats(response);
+            })
+            .catch((error) => {
+                console.error('Error when get grupsplats: ', error);
+            });
+        }
+    }, [restaurant]);
         
     useEffect(() => {
         // TODO: agadar el id del grup des de la url
         // Coger idGrup desde la url
-        if (idMenu !== undefined) {
-            getMenu(1, idMenu)
+        if (idMenu !== undefined && restaurant !== undefined) {
+            getMenu(restaurant.id, idMenu)
             .then(response => {
                 console.log(response);
                 setMenu(response);
@@ -72,7 +95,7 @@ export default function editaMenu (){
                 console.error('Error when get grupsplats: ', error);
             });
         }   
-    }, [idMenu, refresh]);
+    }, [idMenu, refresh, restaurant]);
 
 
     useEffect(() => {
@@ -84,24 +107,6 @@ export default function editaMenu (){
         }
     }, [menu]);
 
-    // TODO: This must work for multiple plates
-    const handlePlatNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPlatName(e.target.value);
-    };
-
-    const handleNewPlatNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPlatName(e.target.value);
-    };
-
-    const handleNewPlatPreuChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPlatPreu(parseFloat(e.target.value));
-    };
-    
-    // TODO: This must work for multiple prices
-    const handlePlatPreuChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPlatPreu(parseFloat(e.target.value));
-    };
-    
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
     };
@@ -112,9 +117,9 @@ export default function editaMenu (){
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (idMenu == undefined && name && preu && grupsPlats && selectedPrimers && selectedSegons && selectedPostres) {
+        if (restaurant !== undefined && idMenu == undefined && name && preu && grupsPlats && selectedPrimers && selectedSegons && selectedPostres) {
             console.log('Creant menu', name, preu, selectedPrimers, selectedSegons, selectedPostres);
-            addMenu(1, name, preu, selectedPrimers, selectedSegons, selectedPostres)
+            addMenu(restaurant.id, name, preu, selectedPrimers, selectedSegons, selectedPostres)
             .then(response => {
                 console.log(response);
 
@@ -139,38 +144,6 @@ export default function editaMenu (){
                 });
             };
         }
-    };
-
-    const handleSavePlat = (idPlat: number, nom:string, preu: number, idGrup:number) => {
-        updatePlat(1, idPlat, nom, preu, idGrup)
-        .then(response => {
-            console.log(response);
-            setRefresh(!refresh);
-            // setGrupsPlats(response);
-        })
-        .catch((error) => {
-            console.error('Error when update plats: ', error);
-        });
-        console.log(nom, preu, idGrup)
-    };
-
-    const handleAddPlat = () => {
-        // console.log('Afegint plat', newPlatName, newPlatPreu, grupsPlats?.id);
-        // if (grupsPlats?.id == undefined) return;
-        // addPlat(1, newPlatName, newPlatPreu, grupsPlats?.id)
-        // .then(response => {
-        //     console.log(response);
-        //     setRefresh(!refresh);
-        //     setNewPlatName('');
-        //     setNewPlatPreu(0);
-        // })
-        // .catch((error) => {
-        //     console.error('Error when update plats: ', error);
-        // });
-
-    }
-
-    const handleDeletePlat = (platId: number) => {
     };
 
     const handlePrimersSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {

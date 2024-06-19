@@ -5,14 +5,31 @@ import { Input, Button } from "@/utils/components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faFloppyDisk, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { IGrupPlats } from "@/utils/interfaces";
-import { addGrupPlats, addPlat, getGrupPlats, getGrupsPlats, updateGrupPlats, updatePlat } from "@/utils/api";
-
+import { IGrupPlats, IRestaurant } from "@/utils/interfaces";
+import { addGrupPlats, addPlat, getGrupPlats, getGrupsPlats, getRestaurant, updateGrupPlats, updatePlat } from "@/utils/api";
+import e from "express";
+import { useSession } from "next-auth/react";
 
 export default function editaGrupPlats (){
     const router = useRouter();
     // const idGrup: string = router.asPath.split('=')[1];
+    const [restaurant, setRestaurant] = useState<IRestaurant>();
+    const { data: session } = useSession(); // Obtenir la sessió de l'usuari
 
+    useEffect(() => {
+        if (session && session.user.email) {
+
+            getRestaurant(session.user.email)
+            .then((response) => {
+                console.log(response);
+                setRestaurant(response);
+
+            })
+            .catch((error) => {
+                console.error('Error fetching restaurant:', error);
+            });
+        }
+    }, [session]);
 
     const [idGrup, setIdGrup] = useState<string | undefined>(undefined);
 
@@ -40,10 +57,10 @@ export default function editaGrupPlats (){
     useEffect(() => {
         // TODO: agadar el id del grup des de la url
         // Coger idGrup desde la url
-        if (idGrup !== undefined) {
-            getGrupPlats(1, idGrup)
+        if (idGrup !== undefined && restaurant !== undefined) {
+            getGrupPlats(restaurant.id, idGrup)
             .then(response => {
-                console.log(response);
+                console.log("grupplats del restaurant", response);
                 setGrupsPlats(response);
                 setName(response.nomGrup);
 
@@ -52,7 +69,7 @@ export default function editaGrupPlats (){
                 console.error('Error when get grupsplats: ', error);
             });
         }   
-    }, [idGrup, refresh]);
+    }, [idGrup, refresh, restaurant]);
 
     useEffect(() => {
         if (grupsPlats && selectedPlat !== null){
@@ -86,9 +103,9 @@ export default function editaGrupPlats (){
     };
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (idGrup == undefined) {
+        if (idGrup == undefined && restaurant !== undefined) {
             console.log('Creant grup', name);
-            addGrupPlats(1, name)
+            addGrupPlats(restaurant.id, name)
             .then(response => {
                 console.log(response);
 
@@ -113,7 +130,7 @@ export default function editaGrupPlats (){
     };
 
     const handleSavePlat = (idPlat: number, nom:string, preu: number, idGrup:number) => {
-        updatePlat(1, idPlat, nom, preu, idGrup)
+        updatePlat(idPlat, nom, preu, idGrup)
         .then(response => {
             console.log(response);
             setRefresh(!refresh);

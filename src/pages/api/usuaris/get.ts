@@ -12,10 +12,10 @@ export default async function handler(
 ) {
     const session = await getServerSession(req, res, options)
 
-    if (!session) {
-        res.status(401).json({ error: "Unauthorized" });
-        return;
-    }
+    // if (!session) {
+    //     res.status(401).json({ error: "Unauthorized" });
+    //     return;
+    // }
 
     if (req.method == "GET") {
         try {

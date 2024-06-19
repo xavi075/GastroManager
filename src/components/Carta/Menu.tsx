@@ -2,43 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { getMenus } from '@/utils/api';
-import { IMenu } from '@/utils/interfaces';
+import { IMenu, IRestaurant } from '@/utils/interfaces';
 import Link from 'next/link';
 
+interface MenuProps {
+    restaurant?: IRestaurant;
+  }
 
-
-export const Menu = () => {
-
-    const Menus = [{
-        nom: "Migdia",
-        // TODO: Evaluate converting the lists to lists of objects
-        primers: ["Amanida Cèsar", "Sopa de Verdures"],
-        segons: ["Llom a la Planxa", "Pasta Carbonara"],
-        postres: ["Pastís de Xocolata", "Gelat de Vainilla"],
-        preu: 13.95
-    },
-    {
-        nom: "Cap de Setmana",
-        // TODO: Evaluate converting the lists to lists of objects
-        // TODO: Add Colors or other minor fixes
-        primers: ["Amanida Verda", "Puré de Carabassa"],
-        segons: ["Hamburguesa de Vedella", "Lluç amb guarnició"],
-        postres: ["Pudding", "Fruita de Temporada"],
-        preu: 19.95
-    }]
+export const Menu = ({ restaurant }: MenuProps) => {
 
     const [menus, setMenus] = useState<IMenu[]>([]);
 
+    console.log("restaurant a menu", restaurant);
+
     useEffect(() => {
-        getMenus(1)
-        .then(response => {
-            console.log(response);
-            setMenus(response);
-        })
-        .catch((error) => {
-            console.error('Error when get menus: ', error);
-        });
-    }, [])
+        if (restaurant) {
+            getMenus(restaurant.id)
+            .then(response => {
+                console.log("menus", response);
+                setMenus(response);
+            })
+            .catch((error) => {
+                console.error('Error when get menus: ', error);
+            });
+        }
+    }, [restaurant])
 
     return (
         <section>
