@@ -16,6 +16,8 @@ export default async function handler(
     //     res.status(401).json({ error: "Unauthorized" });
     //     return;
     // }
+    console.log("HOLA")
+    console.log(session)
 
     if (req.method === "POST") {
         try {

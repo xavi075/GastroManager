@@ -217,6 +217,21 @@ export function deleteLiniaMenu(id: number): Promise<ILiniaMenu> {
         return res 
     })
 }
+export function getGrupsPlatsCarta(idRestaurant: number): Promise<IGrupPlats[]> {
+    let url = `/api/grupplatsCarta/get?idRestaurant=${idRestaurant}`;
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get grupsplats is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
 export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
     let url = `/api/grupplats/get?idRestaurant=${idRestaurant}`;
     return fetch(url, {
@@ -232,23 +247,8 @@ export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
     })
 }
 
-export function getGrupPlats(idRestaurant: number, idGrup?: string): Promise<IGrupPlats> {
-    let url = `/api/grupplats/get?idRestaurant=${idRestaurant}&idGrup=${idGrup}`;
-    return fetch(url, {
-        method: 'GET',
-        headers: {
-            "Content-type": "application/json"
-        },
-    }).then(res => {
-        if (!res.ok) throw new Error('Response of get grupsplats is not OK')
-        return res.json()
-    }).then( res => {
-        return res 
-    })
-}
-
-  export function getGrupPlats(idRestaurant: number, idGrup: string): Promise<IGrupPlats> {
-    let url = `/api/grupplats/get?idRestaurant=${idRestaurant}&idGrup=${idGrup}`;
+export function getGrupPlats(idRestaurant: number, idGrup: string): Promise<IGrupPlats> {
+    let url = `/api/grupplatsCarta/get?idRestaurant=${idRestaurant}&idGrup=${idGrup}`;
     return fetch(url, {
         method: 'GET',
         headers: {
@@ -291,6 +291,20 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
     })
   }
 
+  export function getMenusCarta(idRestaurant: number): Promise<IMenu[]> {
+    return fetch(`/api/menusCarta/get?idRestaurant=${idRestaurant}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get grupsplats is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
   export function addComanda(idTaula: number): Promise<IComanda> {
     return fetch(`/api/comanda/add?idTaula=${idTaula}`, {
         method: 'PUT',
@@ -307,7 +321,7 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
   }
 
 export function addGrupPlats(idRestaurant: number, nomGrup: string): Promise<IGrupPlats> {
-    return fetch(/api/grupplats/add, {
+    return fetch("/api/grupplats/add", {
         method: 'POST',
         headers: {
             "Content-type": "application/json"
@@ -322,7 +336,7 @@ export function addGrupPlats(idRestaurant: number, nomGrup: string): Promise<IGr
 }
 
 export function updatePlat(idPlat: number, nomPlat: string, preu: number, idGrup: number): Promise<IGrupPlats> {
-    return fetch(/api/plats/update, {
+    return fetch("/api/plats/update", {
         method: 'PUT',
         headers: {
             "Content-type": "application/json"
@@ -366,7 +380,7 @@ export function updatePlat(idPlat: number, nomPlat: string, preu: number, idGrup
   }
 
 export function addPlat(idRestaurant: number, nomPlat: string, preu: number, idGrup: number): Promise<IGrupPlats> {
-    return fetch(/api/plats/add, {
+    return fetch("/api/plats/add", {
         method: 'POST',
         headers: {
             "Content-type": "application/json"
@@ -395,22 +409,8 @@ export function updateGrupPlats(idGrup: number, nomGrup: string): Promise<IGrupP
     })
 }
 
-export function getMenu(idMenu: number): Promise<IMenu> {
-    return fetch(`/api/menus/get?idMenu=${idMenu}`, {
-        method: 'GET',
-        headers: {
-            "Content-type": "application/json"
-        },
-    }).then(res => {
-        if (!res.ok) throw new Error('Response of get menu is not OK')
-        return res.json()
-    }).then( res => {
-        return res 
-    })
-  }
-
 export function getMenuRestaurant(idRestaurant: number, idMenu: string): Promise<IMenu> {
-    return fetch(/api/menus/get?idRestaurant=${idRestaurant}&idMenu=${idMenu}, {
+    return fetch(`/api/menus/get?idRestaurant=${idRestaurant}&idMenu=${idMenu}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"
@@ -441,7 +441,7 @@ export function getMenuRestaurant(idRestaurant: number, idMenu: string): Promise
   }
 
 export function addMenu(idRestaurant: number, nomMenu: string, preu: number, primers: number, segons: number, postres: number): Promise<IMenu> {
-    return fetch(/api/menus/add, {
+    return fetch("/api/menus/add", {
         method: 'POST',
         headers: {
             "Content-type": "application/json"
@@ -471,7 +471,7 @@ export function addMenu(idRestaurant: number, nomMenu: string, preu: number, pri
 
 
 export function updateMenu(idMenu: number, nomMenu: string, preu: number, primers: number, segons: number, postres: number): Promise<IMenu> {
-    return fetch(/api/menus/update, {
+    return fetch("/api/menus/update", {
         method: 'PUT',
         headers: {
             "Content-type": "application/json"
@@ -486,7 +486,7 @@ export function updateMenu(idMenu: number, nomMenu: string, preu: number, primer
 }
 
 export function deleteMenu(idMenu: number): Promise<IMenu> {
-    return fetch(/api/menus/delete, {
+    return fetch("/api/menus/delete", {
         method: 'DELETE',
         headers: {
             "Content-type": "application/json"
@@ -514,9 +514,23 @@ export function deleteMenu(idMenu: number): Promise<IMenu> {
     })
   }
 
+export function getMenuEdita(idRestaurant: number, idMenu: string): Promise<IMenu> {
+    return fetch(`/api/menus/get?idRestaurant=${idRestaurant}&idMenu=${idMenu}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get menu is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
 
 export function deleteGrupPlats(idGrup: number): Promise<IGrupPlats> {
-    return fetch(/api/grupplats/delete, {
+    return fetch("/api/grupplats/delete", {
         method: 'DELETE',
         headers: {
             "Content-type": "application/json"
@@ -546,7 +560,7 @@ export function deleteGrupPlats(idGrup: number): Promise<IGrupPlats> {
   }
 
 export function deletePlat(idPlat: number): Promise<IGrupPlats> {
-    return fetch(/api/plats/delete, {
+    return fetch("/api/plats/delete", {
         method: 'DELETE',
         headers: {
             "Content-type": "application/json"
@@ -574,7 +588,7 @@ export function deletePlat(idPlat: number): Promise<IGrupPlats> {
 }
 
 export function getRestaurantEmail(email: string): Promise<any> {
-    return fetch(/api/restaurants/get?email=${email}, {
+    return fetch(`/api/restaurantsCarta/get?email=${email}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"

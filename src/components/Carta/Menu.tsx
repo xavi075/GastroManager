@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { deleteMenu, getMenus } from '@/utils/api';
+import { deleteMenu, getMenus, getMenusCarta } from '@/utils/api';
 import { IMenu, IRestaurant } from '@/utils/interfaces';
 import Link from 'next/link';
 import handle from '@/pages/api/grupplats/get';
@@ -21,7 +21,7 @@ export const Menu = ({ restaurant }: MenuProps) => {
 
     useEffect(() => {
         if (restaurant) {
-            getMenus(restaurant.id)
+            getMenusCarta(restaurant.id)
             .then(response => {
                 console.log("menus", response);
                 setMenus(response);

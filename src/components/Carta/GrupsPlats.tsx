@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencil, faFolderPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { get } from 'http';
-import { deleteGrupPlats, getGrupsPlats, getMenus } from '@/utils/api';
+import { deleteGrupPlats, getGrupsPlatsCarta, getMenus } from '@/utils/api';
 import { IGrupPlats, IMenu, IRestaurant } from '@/utils/interfaces';
 import { useRouter } from 'next/router';
 
@@ -24,7 +24,7 @@ export const GrupsPlats = ({ restaurant }: GrupsPlatsProps) => {
     useEffect(() => {
         if (restaurant) {
             // console.log("restaurant a useeffect", restaurant);
-            getGrupsPlats(restaurant.id)
+            getGrupsPlatsCarta(restaurant.id)
             .then(response => {
                 console.log(response);
                 setGrupsPlats(response);

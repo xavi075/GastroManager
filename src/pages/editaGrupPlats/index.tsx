@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faFloppyDisk, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { IGrupPlats, IRestaurant } from "@/utils/interfaces";
-import { addGrupPlats, addPlat, deletePlat, getGrupPlats, getGrupsPlats, getRestaurant, updateGrupPlats, updatePlat } from "@/utils/api";
+import { addGrupPlats, addPlat, deletePlat, getGrupPlats, getRestaurant, getRestaurantEmail, updateGrupPlats, updatePlat } from "@/utils/api";
 import e from "express";
 import { useSession } from "next-auth/react";
 
@@ -19,7 +19,7 @@ export default function editaGrupPlats (){
     useEffect(() => {
         if (session && session.user.email) {
 
-            getRestaurant(session.user.email)
+            getRestaurantEmail(session.user.email)
             .then((response) => {
                 console.log(response);
                 setRestaurant(response);

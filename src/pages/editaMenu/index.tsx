@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faFloppyDisk, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { IGrupPlats, IMenu, IRestaurant } from "@/utils/interfaces";
-import { addGrupPlats, addMenu, addPlat, getGrupPlats, getGrupsPlats, getMenu, getRestaurant, updateGrupPlats, updateMenu, updatePlat } from "@/utils/api";
+import { addGrupPlats, addMenu, addPlat, getGrupPlats, getGrupsPlatsCarta, getMenu, getMenuEdita, getRestaurant, getRestaurantEmail, updateGrupPlats, updateMenu, updatePlat } from "@/utils/api";
 import { get } from "http";
 import { Select, SelectItem, menu } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
@@ -21,7 +21,7 @@ export default function editaMenu (){
     useEffect(() => {
         if (session && session.user.email) {
 
-            getRestaurant(session.user.email)
+            getRestaurantEmail(session.user.email)
             .then((response) => {
                 console.log(response);
                 setRestaurant(response);
@@ -69,7 +69,7 @@ export default function editaMenu (){
 
     useEffect(() => {
         if (restaurant) {
-            getGrupsPlats(restaurant.id)
+            getGrupsPlatsCarta(restaurant.id)
             .then(response => {
                 console.log(response);
                 setGrupsPlats(response);
@@ -84,7 +84,7 @@ export default function editaMenu (){
         // TODO: agadar el id del grup des de la url
         // Coger idGrup desde la url
         if (idMenu !== undefined && restaurant !== undefined) {
-            getMenu(restaurant.id, idMenu)
+            getMenuEdita(restaurant.id, idMenu)
             .then(response => {
                 console.log(response);
                 setMenu(response);

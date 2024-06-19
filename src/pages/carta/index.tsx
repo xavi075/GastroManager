@@ -3,7 +3,7 @@ import Layout from '@/components/Layout/Layout';
 import { GrupsPlats } from '@/components/Carta/GrupsPlats';
 import { Menu } from '@/components/Carta/Menu';
 import { useSession } from 'next-auth/react';
-import { getRestaurant } from '@/utils/api';
+import { getRestaurant, getRestaurantEmail } from '@/utils/api';
 import { IRestaurant } from '@/utils/interfaces';
 
 export default function carta (){
@@ -14,7 +14,7 @@ export default function carta (){
 
   useEffect(() => {
     if (session && session.user.email) {
-      getRestaurant(session.user.email)
+      getRestaurantEmail(session.user.email)
       .then((response) => {
         console.log(response);
         setRestaurant(response);
