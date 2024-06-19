@@ -26,12 +26,6 @@ export const NAVBAR_LINKS = [
     label: "Personal",
     path: "/personal",
     icon: faUsers,
-  },
-  {
-    key: "estadistiques",
-    label: "Estadístiques",
-    path: "/estadistiques",
-    icon: faChartSimple,
   }
 ];
 
