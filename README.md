@@ -35,10 +35,9 @@ MySQL: MySQL is the chosen database management system for storing and managing t
 This project contains the web app project, including all the backend. It is completely functional.
 
 However, due to some problems, we were unable to launch the mobile application or generate the .apk file. During the development process, a problem with the java version prevented us from generating the file. 
-Despite this, it was made part of the process, which is also contained in a zip archive of this project.
+Despite this, it was made part of the process, which is also contained in a .tar.xz file of this project.
 
 ## Next Steps
 
-Implement the web services and database on our server.
 Continue developing new functionalities and enhancements in the user interface.
 Perform comprehensive testing to ensure code stability and quality.
