@@ -18,11 +18,11 @@ To install Gastromanager, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/yourusername/gastromanager.git`
 2. Navigate to the project directory: `cd gastromanager`
-3. Install the dependencies: `npm run dev`
+3. Install the dependencies: `npm install`
 
 ## Usage
 
-To use Gastromanager, start the server with `npm start` and navigate to `http://localhost:3000` in your web browser. From there, you can access the various features of the application. It should be taken into account that for this version of the application at least one restaurant must be added to the database.
+To use Gastromanager, start the server with `npm run dev` and navigate to `http://localhost:3000` in your web browser. From there, you can access the various features of the application. It should be taken into account that for this version of the application at least one restaurant must be added to the database.
 
 ## Technologies Used
 
@@ -32,10 +32,10 @@ Prisma: Prisma serves as the ORM (Object-Relational Mapping) for interacting wit
 MySQL: MySQL is the chosen database management system for storing and managing the application's data.
 
 ## Current Status
+This project contains the web app project, including all the backend. It is completely functional.
 
-Database: Although the database functionality is designed and models are defined in Prisma, the database has not been implemented in the server yet.
-Functionalities: We have implemented various requests and functionalities across different aspects of the web, including user and role management.
-Routes: Next.js is employed to manage the routes of the application, providing dynamic and flexible routing.
+However, due to some problems, we were unable to launch the mobile application or generate the .apk file. During the development process, a problem with the java version prevented us from generating the file. 
+Despite this, it was made part of the process, which is also contained in a zip archive of this project.
 
 ## Next Steps
 
