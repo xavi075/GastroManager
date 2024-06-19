@@ -320,16 +320,20 @@ export default function editaMenu (){
                         {/* <h3 className="col-span-2 font-semibold">Llista de plats</h3> */}
 
                     </section>
+                    <div className="flex justify-center">
                     <button type="submit" className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2">
                         Desa <FontAwesomeIcon icon={faFloppyDisk} />
                     </button>
+                    </div>
                 </form>
 
+                <div className="flex justify-center">
                 <Link href={`/carta`}>
-                    <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2">
-                        Torna al menú <FontAwesomeIcon icon={faArrowLeft} />
+                    <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded m-4 mb-4 ml-2">
+                    Torna al menú <FontAwesomeIcon icon={faArrowLeft} />
                     </button>
                 </Link>
+                </div>
             </div>
         </Layout>
     );
