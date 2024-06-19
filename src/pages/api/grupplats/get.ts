@@ -4,20 +4,32 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "GET") {
         try {
-            const { idRestaurant } = req.query;
+            const { idRestaurant, idGrup } = req.query;
             if (idRestaurant) {
-                const grupsPlats = await prisma.grupPlat.findMany({
-                    where: {
-                        idRestaurant: Number(idRestaurant),
-                    },
-                    include: {
-                        plat: true,
-                    },
-                });
+                let grupsPlats;
+                if (idGrup) {
+                    grupsPlats = await prisma.grupPlat.findUnique({
+                        where: {
+                            id: Number(idGrup),
+                            idRestaurant: Number(idRestaurant),
+                        },
+                        include: {
+                            plat: true,
+                        },
+                    });
+                } else {
+                    grupsPlats = await prisma.grupPlat.findMany({
+                        where: {
+                            idRestaurant: Number(idRestaurant),
+                        },
+                        include: {
+                            plat: true,
+                        },
+                    });
+                }
                 res.status(200).json(grupsPlats);
                 return;
             } 
