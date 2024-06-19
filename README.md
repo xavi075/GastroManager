@@ -22,7 +22,7 @@ To install Gastromanager, follow these steps:
 
 ## Usage
 
-To use Gastromanager, start the server with `npm run dev` and navigate to `http://localhost:3000` in your web browser. From there, you can access the various features of the application. It should be taken into account that for this version of the application at least one restaurant must be added to the database.
+To use Gastromanager, start the server with `npm run dev` and navigate to `http://localhost:3000` in your web browser. From there, you can access the various features of the application. It should be taken into account that for this version of the application at least one restaurant must be added to the database. Additionally, you can access the website by clicking [here](https://gastromanager.quenu.org). 
 
 ## Technologies Used
 
