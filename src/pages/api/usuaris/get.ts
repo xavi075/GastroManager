@@ -19,11 +19,30 @@ export default async function handler(
 
     if (req.method == "GET") {
         try {
-            const { id, email } = req.query;
+            const { id } = req.query;
+            const { idRestaurant } = req.query;
+            const { email } = req.query;
             if (id) {
                 const usuari = await prisma.usuari.findUnique({
                     where: {
                         id: Number(id),
+                    },
+                    select: {
+                        id: true,
+                        email: true,
+                        nom: true,
+                        contrasenya_hash: false,
+                        dataCreacioUsuari: true,
+                        rol: true,
+                        restaurant: true,
+                    },
+                });
+                res.status(200).json(usuari);
+                return;
+            } else if (idRestaurant) {
+                const usuari = await prisma.usuari.findMany({
+                    where: {
+                        idRestaurant: Number(idRestaurant),
                     },
                     select: {
                         id: true,

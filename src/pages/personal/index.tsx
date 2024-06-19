@@ -1,42 +1,44 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/router';
-import { getUsuaris, getUsuari, deleteUsuari, addUsuari} from '@/utils/api';
+import { useRouter } from 'next/router'; // Importem useRouter per gestionar la navegació
 import { IUsuari } from '@/utils/interfaces';
-import {error} from 'console';
+import { getPersonal, deleteUsuari } from '@/utils/api';
 
 
 const Personal: React.FC = () => {
+  const router = useRouter(); // Inicialitzem useRouter
+
+  const idRestaurant: number = 1;
   const [usuaris, setUsuaris] = useState<IUsuari[]>([]);
-  
-  useEffect(() => {
-    fetch("api/usuaris/get")
-      .then((res) => res.json())
-      .then((data) => {
-        setUsuaris(data);
-      })
-      .catch((error) => console.error('Error al cargar usuarios:', error));
-  }, []);
-  const router = useRouter();
+  const [actualitzarUsuaris, setActualitzarUsuaris] = useState(false);
+
   const afegirUsuari = () => {
      router.push('/AfegirUsuari');
   };
 
   const eliminarUsuari = (id: number) => {
+    console.log(id)
     deleteUsuari(id)
       .then(() => {
-        cargarUsuaris();
+        setActualitzarUsuaris(true)
       })
-      .catch((error) => console.error('Error al eliminar usuario:', error));
+      .catch((error) => console.error('Error when delete usuari:', error));
   }
 
-  const cargarUsuaris = () => {
-    getUsuaris()
-      .then((data) => {setUsuaris(data);})
-      .catch((error) => console.error('Error al cargar usuarios:', error));
-  }
+  useEffect(() => {
+    if(idRestaurant || actualitzarUsuaris) {
+      getPersonal(idRestaurant)
+      .then(response => {
+        setUsuaris(response)
+        setActualitzarUsuaris(false)
+      })
+      .catch((error) => {
+        console.error('Error when get usuaris: ', error);
+      });
+    }
+  }, [idRestaurant, actualitzarUsuaris])
 
   return (
     <Layout>
@@ -52,14 +54,17 @@ const Personal: React.FC = () => {
                 <div className="p-3 overflow-hidden">
                   <div className="text-left">
                     <p><strong>Rol:</strong> {usuari.rol.nomRol}</p>
-                    <p><strong>Correu:</strong> {usuari.email}</p>
+                    <p><strong>Email:</strong> {usuari.email}</p>
                   </div>
                 </div>
-                <div className="p-3 flex justify-center">
+                {usuari.rol.nomRol != 'Administrador' && (
+                  <div className="p-3 flex justify-center">
                   <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-1 px-2 rounded text-sm" onClick={() => eliminarUsuari(usuari.id)}>
                     Eliminar Usuari <FontAwesomeIcon icon={faMinus}/>
                   </button>
                 </div>
+                )}
+                
               </div>
             </div>
           ))}

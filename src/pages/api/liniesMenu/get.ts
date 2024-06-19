@@ -17,7 +17,10 @@ export default async function handler(
                         idComanda: Number(idComanda)
                     },
                     include: {
-                        menu: true
+                        menu: true,
+                        plat_liniaMenu_idPrimerPlatToplat: true,
+                        plat_liniaMenu_idSegonPlatToplat: true,
+                        plat_liniaMenu_idPostresToplat: true,
                     }
                 });
                 res.status(200).json(liniesMenu);

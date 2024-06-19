@@ -1,6 +1,7 @@
-// pages/api/taules/get.js
+// pages/api/plats/get.js
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { copyFileSync } from "fs";
 
 const prisma = new PrismaClient();
 
@@ -10,23 +11,26 @@ export default async function handler(
 ) {
     if (req.method === "GET") {
         try {
-            const { idRestaurant } = req.query;
-            const { idTaula } = req.query;
-            if (idTaula){
-                const taula = await prisma.taula.findMany({
+            const { idGrup } = req.query;
+            const { idPlat } = req.query;
+            console.log("Id grup", idGrup, "Id Plat", idPlat)
+            if (idPlat){
+                console.log("Obtenir un sol plat")
+                const plat = await prisma.plat.findMany({
                     where: {
-                        id: Number(idTaula),
+                        id: Number(idPlat),
                     },
                 });
-                res.status(200).json(taula);
+                res.status(200).json(plat);
                 return;
-            } else if (idRestaurant) {
-                const taulesRestaurant = await prisma.taula.findMany({
+            } else if (idGrup) {
+                console.log("Obtenir tots els plats")
+                const plats = await prisma.plat.findMany({
                     where: {
-                        idRestaurant: Number(idRestaurant),
+                        idGrup: Number(idGrup),
                     },
                 });
-                res.status(200).json(taulesRestaurant);
+                res.status(200).json(plats);
                 return;
             } else {
                 res.status(405).json({ error: "Method not allowed" });

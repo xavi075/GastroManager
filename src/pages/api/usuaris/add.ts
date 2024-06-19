@@ -19,7 +19,10 @@ export default async function handler(
 
     if (req.method === "POST") {
         try {
-            const { email, nom, contrasenya, nomRol, nifRestaurant } = req.body;
+            console.log("REQ BODY", req.body)
+            const { nom, email, contrasenya, nomRol, nifRestaurant } = req.body;
+
+            console.log("EN EL ADD", email, nom, contrasenya, nomRol, nifRestaurant)
 
             // comprova si l'email ja existeix
             const existingEmail = await prisma.usuari.findUnique({
@@ -29,8 +32,11 @@ export default async function handler(
                 return res.status(409).json({ error: "Email already exists" })
             }
 
+            console.log("1")
+
             const hashedPassword = await bcrypt.hash(contrasenya, 10);
 
+            console.log("2")
             const newRol = await prisma.rol.findUnique({
                 where: { nomRol: nomRol }
             });
@@ -38,12 +44,14 @@ export default async function handler(
                 return res.status(404).json({ error: "Role not found" });
             }
 
+            console.log("3")
             const newRestaurant = await prisma.restaurant.findUnique({
-                where: { nif: nifRestaurant }
+                where: { nif: String(nifRestaurant) }
             });
             if (!newRestaurant) {
                 return res.status(404).json({ error: "Restaurant not found" });
             }
+            console.log("4")
 
             const newUser = await prisma.usuari.create({
                 data: {
@@ -54,8 +62,9 @@ export default async function handler(
                     idRestaurant: newRestaurant.id
                 },
             });
+            console.log("5")
             const { contrasenya_hash: newUserPassword, ...rest } = newUser;
-
+            console.log("6")
             res.status(200).json(rest);
         } catch (err: any) {
             res.status(500).json({ error: err.message });

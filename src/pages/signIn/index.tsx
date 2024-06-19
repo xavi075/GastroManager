@@ -39,7 +39,7 @@ const SignIn = () => {
             setErrorMessage(true);
         } else {
             setErrorMessage(false);
-            router.push('/taules');
+            router.push(`/taules`);
         }
     };
 
