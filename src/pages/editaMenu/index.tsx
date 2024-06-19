@@ -199,6 +199,7 @@ export default function editaMenu (){
                         <label htmlFor="platSelect" className="block text-lg font-medium text-gray-700">Selecciona un grup</label>
                         {menu && menu.idGrupPrimerPlat && (
                             <Select
+                            isRequired
                             id="platSelect"
                             aria-label="Selecciona un grup"
                             placeholder="Selecciona un grup"
@@ -217,6 +218,7 @@ export default function editaMenu (){
 
                         {(idMenu == undefined || menu?.idGrupPrimerPlat == undefined) && (
                             <Select
+                            isRequired
                             id="platSelect"
                             aria-label="Selecciona un grup"
                             placeholder="Selecciona un grup"
@@ -241,6 +243,7 @@ export default function editaMenu (){
                         <label htmlFor="platSelect" className="block text-lg font-medium text-gray-700">Selecciona un grup</label>
                         {menu && menu.idGrupSegonPlat && (
                             <Select
+                            isRequired
                             id="platSelect"
                             aria-label="Selecciona un grup"
                             placeholder="Selecciona un grup"
