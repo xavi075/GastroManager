@@ -1,47 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolderPlus, faPencil } from '@fortawesome/free-solid-svg-icons';
-import { getMenus } from '@/utils/api';
-import { IMenu } from '@/utils/interfaces';
+import { faFolderPlus, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { deleteMenu, getMenus } from '@/utils/api';
+import { IMenu, IRestaurant } from '@/utils/interfaces';
+import Link from 'next/link';
+import handle from '@/pages/api/grupplats/get';
+import { useRouter } from 'next/router';
 
+interface MenuProps {
+    restaurant?: IRestaurant;
+  }
 
-
-export const Menu = () => {
-
-    const Menus = [{
-        nom: "Migdia",
-        // TODO: Evaluate converting the lists to lists of objects
-        primers: ["Amanida Cèsar", "Sopa de Verdures"],
-        segons: ["Llom a la Planxa", "Pasta Carbonara"],
-        postres: ["Pastís de Xocolata", "Gelat de Vainilla"],
-        preu: 13.95
-    },
-    {
-        nom: "Cap de Setmana",
-        // TODO: Evaluate converting the lists to lists of objects
-        // TODO: Add Colors or other minor fixes
-        primers: ["Amanida Verda", "Puré de Carabassa"],
-        segons: ["Hamburguesa de Vedella", "Lluç amb guarnició"],
-        postres: ["Pudding", "Fruita de Temporada"],
-        preu: 19.95
-    }]
+export const Menu = ({ restaurant }: MenuProps) => {
+    const router = useRouter();
 
     const [menus, setMenus] = useState<IMenu[]>([]);
+    const [noMenu, setNoMenu] = useState<boolean>(false);
+
+    console.log("restaurant a menu", restaurant);
 
     useEffect(() => {
-        getMenus(1)
-        .then(response => {
-            console.log(response);
-            setMenus(response);
+        if (restaurant) {
+            getMenus(restaurant.id)
+            .then(response => {
+                console.log("menus", response);
+                setMenus(response);
+                if (response.length === 0) {
+                    setNoMenu(true);
+                } else {
+                    setNoMenu(false);
+                }
+            })
+            .catch((error) => {
+                console.error('Error when get menus: ', error);
+            });
+        }
+    }, [restaurant])
+
+    const handleDeleteMenu = (idMenu: number) => {
+        console.log('Delete menu', idMenu);
+        if (!window.confirm("Segur que vols eliminar el menú?")) return;
+        deleteMenu(idMenu)
+        .then(() => {
+            router.reload();
         })
         .catch((error) => {
-            console.error('Error when get menus: ', error);
+            console.error('Error when delete menu: ', error);
+            alert('Error al eliminar el menú');
         });
-    }, [])
+    }
 
     return (
         <section>
             <h2 className='text-2xl font-bold m-2 text-center '>Menús actuals</h2>
+            {noMenu && <p className='text-center my-4'>No hi ha menús</p>}
             <div className='grid grid-cols-1 xl:grid-cols-2 gap-4 justify-items-center'>
                 {menus.map(( menu ) => (
                     <article className='bg-bronze-200 rounded-md my-4 text-center justify-center text-lg pb-4'>
@@ -49,7 +61,7 @@ export const Menu = () => {
                     <div className='px-0'>
                         <h4 className="text-lg font-bold mb-2">Primer Plat</h4>
                         <ul className='m-4 p-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.grupPlat_menu_idGrupPrimerPlatTogrupPlat.plat.map((primer) =>(
+                            {menu.grupPlat_menu_idGrupPrimerPlatTogrupPlat?.plat.map((primer) =>(
                                 <li>{primer.nom}</li>
                             ))}
                         </ul>
@@ -57,7 +69,7 @@ export const Menu = () => {
                     <div>
                         <h4 className="text-lg font-bold mb-2">Segon Plat</h4>
                         <ul className='m-4 py-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.grupPlat_menu_idGrupSegonPlatTogrupPlat.plat.map((segon) =>(
+                            {menu.grupPlat_menu_idGrupSegonPlatTogrupPlat?.plat.map((segon) =>(
                                 <li>{segon.nom}</li>
                             ))}
                         </ul>
@@ -65,7 +77,7 @@ export const Menu = () => {
                     <div>
                         <h4 className="text-lg font-bold mb-2">Postre</h4>
                         <ul className='m-4 py-2 bg-white shadow-md rounded-md w-56'>
-                            {menu.grupPlat_menu_idGrupPostresTogrupPlat.plat.map((postre) =>(
+                            {menu.grupPlat_menu_idGrupPostresTogrupPlat?.plat.map((postre) =>(
                                 <li>{postre.nom}</li>
                             ))}
                         </ul>
@@ -74,13 +86,18 @@ export const Menu = () => {
                         <h4 className="text-lg font-bold">Preu:</h4>
                         <p className="text-xl font-bold">{menu.preu}€</p>
                     </div>
-                    <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
-                        Edita <FontAwesomeIcon icon={faPencil}/>
+                    <Link href={`/editaMenu?idMenu=${menu.id}`}>
+                        <button className="bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded mx-4 mb-4 ml-2">
+                            Edita <FontAwesomeIcon icon={faPencil}/>
+                        </button>
+                    </Link>
+                    <button onClick={() => handleDeleteMenu(menu.id)} className="col-span-2 bg-brown-600 hover:bg-brown-500 text-white font-bold py-2 px-4 rounded m-2 ml-2">
+                        Elimina <FontAwesomeIcon icon={faTrash} />
                     </button>
                 </article>                    
                 ))}
             </div>
-            <a href="" className="block bg-bronze-500 hover:bg-bronze-700 text-white font-bold py-2 px-4 rounded mx-auto text-center">
+            <a href="/editaMenu" className="block bg-bronze-500 hover:bg-bronze-700 text-white font-bold py-2 px-4 rounded mx-auto text-center">
                 Afegir un nou menú <FontAwesomeIcon icon={faFolderPlus}/>
             </a>
         </section>

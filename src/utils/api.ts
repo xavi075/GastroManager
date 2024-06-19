@@ -1,19 +1,6 @@
-
-import { IUsuari, IComanda, ILiniaComanda, ILiniaMenu, ITaula, IGrupPlats, IMenu, IPlat, IRestaurant, IRol } from "./interfaces";
-
-export function getRestaurant (idRestaurant: string): Promise<IRestaurant> {
-    return fetch(`/api/restaurants/get?idRestaurant=${idRestaurant}`, {
-        method: 'GET',
-        headers: {
-            "Content-type": "application/json"
-        },
-    }).then(res => {
-        if (!res.ok) throw new Error('Response of get restaurnat is not OK')
-        return res.json()
-    }).then( res => {
-        return res 
-    })
-}
+import exp from "constants";
+import { IComanda, ILiniaComanda, ILiniaMenu, ITaula, IGrupPlats, IMenu, IUsuari, IPlat, IRestaurant, IRol } from "./interfaces";
+import e from "express";
 
 export function getTaules (idRestaurant: string): Promise<ITaula[]> {
     return fetch(`/api/taules/get?idRestaurant=${idRestaurant}`, {
@@ -230,9 +217,24 @@ export function deleteLiniaMenu(id: number): Promise<ILiniaMenu> {
         return res 
     })
 }
-
 export function getGrupsPlats(idRestaurant: number): Promise<IGrupPlats[]> {
-    return fetch(`/api/grupplats/get?idRestaurant=${idRestaurant}`, {
+    let url = `/api/grupplats/get?idRestaurant=${idRestaurant}`;
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get grupsplats is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getGrupPlats(idRestaurant: number, idGrup?: string): Promise<IGrupPlats> {
+    let url = `/api/grupplats/get?idRestaurant=${idRestaurant}&idGrup=${idGrup}`;
+    return fetch(url, {
         method: 'GET',
         headers: {
             "Content-type": "application/json"
@@ -304,6 +306,37 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
     })
   }
 
+export function addGrupPlats(idRestaurant: number, nomGrup: string): Promise<IGrupPlats> {
+    return fetch(/api/grupplats/add, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idRestaurant, nomGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function updatePlat(idPlat: number, nomPlat: string, preu: number, idGrup: number): Promise<IGrupPlats> {
+    return fetch(/api/plats/update, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idPlat, nomPlat, preu, idGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+ 
   export function getPlatsGrup(idGrup: number): Promise<IPlat[]> {
     return fetch(`/api/plats/get?idGrup=${idGrup}`, {
         method: 'GET',
@@ -332,6 +365,66 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
     })
   }
 
+export function addPlat(idRestaurant: number, nomPlat: string, preu: number, idGrup: number): Promise<IGrupPlats> {
+    return fetch(/api/plats/add, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idRestaurant, nomPlat, preu, idGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function updateGrupPlats(idGrup: number, nomGrup: string): Promise<IGrupPlats> {
+    return fetch(`/api/grupplats/update`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idGrup, nomGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getMenu(idMenu: number): Promise<IMenu> {
+    return fetch(`/api/menus/get?idMenu=${idMenu}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get menu is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+  }
+
+export function getMenuRestaurant(idRestaurant: number, idMenu: string): Promise<IMenu> {
+    return fetch(/api/menus/get?idRestaurant=${idRestaurant}&idMenu=${idMenu}, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get menu is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+
+
   export function addLiniaComanda(idComanda: number, idPlat: number, quantitat: number): Promise<ILiniaComanda> {
     return fetch(`/api/liniesComanda/add`, {
         method: 'POST',
@@ -347,6 +440,21 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
     })
   }
 
+export function addMenu(idRestaurant: number, nomMenu: string, preu: number, primers: number, segons: number, postres: number): Promise<IMenu> {
+    return fetch(/api/menus/add, {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idRestaurant, nomMenu, preu, primers, segons, postres})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
   export function getMenusRestaurant(idRestaurant: number): Promise<IMenu[]> {
     return fetch(`/api/menus/get?idRestaurant=${idRestaurant}`, {
         method: 'GET',
@@ -361,6 +469,37 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
     })
   }
 
+
+export function updateMenu(idMenu: number, nomMenu: string, preu: number, primers: number, segons: number, postres: number): Promise<IMenu> {
+    return fetch(/api/menus/update, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idMenu, nomMenu, preu, primers, segons, postres})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+      return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function deleteMenu(idMenu: number): Promise<IMenu> {
+    return fetch(/api/menus/delete, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idMenu})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
   export function getMenu(idMenu: number): Promise<IMenu> {
     return fetch(`/api/menus/get?idMenu=${idMenu}`, {
         method: 'GET',
@@ -374,6 +513,22 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
         return res 
     })
   }
+
+
+export function deleteGrupPlats(idGrup: number): Promise<IGrupPlats> {
+    return fetch(/api/grupplats/delete, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idGrup})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
 
   export function addLiniaMenu(idComanda: number, idMenu: number, idPrimerPlat: number, idSegonPlat: number, idPostres: number): Promise<ILiniaComanda> {
     return fetch(`/api/liniesMenu/add`, {
@@ -390,7 +545,21 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
     })
   }
 
-  export function getRols(): Promise<IRol[]> {
+export function deletePlat(idPlat: number): Promise<IGrupPlats> {
+    return fetch(/api/plats/delete, {
+        method: 'DELETE',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({idPlat})
+    }).then(res => {
+        if (!res.ok) throw new Error('Response is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+ export function getRols(): Promise<IRol[]> {
     return fetch(`/api/rols/get`, {
         method: 'GET',
         headers: {
@@ -398,6 +567,34 @@ export function getMenus(idRestaurant: number): Promise<IMenu[]> {
         },
     }).then(res => {
         if (!res.ok) throw new Error('Response of get rols is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getRestaurantEmail(email: string): Promise<any> {
+    return fetch(/api/restaurants/get?email=${email}, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get restaurant is not OK')
+        return res.json()
+    }).then( res => {
+        return res 
+    })
+}
+
+export function getRestaurant (idRestaurant: string): Promise<IRestaurant> {
+    return fetch(`/api/restaurants/get?idRestaurant=${idRestaurant}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json"
+        },
+    }).then(res => {
+        if (!res.ok) throw new Error('Response of get restaurnat is not OK')
         return res.json()
     }).then( res => {
         return res 

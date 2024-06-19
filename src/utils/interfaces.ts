@@ -81,3 +81,6 @@ export interface IGrupPlats {
   color: string
   plat: IPlat[]
 }
+
+export type IGrupPlatsResponse = IGrupPlats | IGrupPlats [];
+
